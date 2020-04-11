@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29911.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarManagement", "BarManagement.csproj", "{457439A8-877E-48C4-B3A1-A72191032918}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "barDB", "..\barDB\barDB.sqlproj", "{F9B85AF7-EFD4-41F6-8E52-CA8677677AE3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{457439A8-877E-48C4-B3A1-A72191032918}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{457439A8-877E-48C4-B3A1-A72191032918}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{457439A8-877E-48C4-B3A1-A72191032918}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{457439A8-877E-48C4-B3A1-A72191032918}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9B85AF7-EFD4-41F6-8E52-CA8677677AE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9B85AF7-EFD4-41F6-8E52-CA8677677AE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9B85AF7-EFD4-41F6-8E52-CA8677677AE3}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F9B85AF7-EFD4-41F6-8E52-CA8677677AE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9B85AF7-EFD4-41F6-8E52-CA8677677AE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9B85AF7-EFD4-41F6-8E52-CA8677677AE3}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {36887C19-B718-40E3-A8B9-4A311EC0A580}
+	EndGlobalSection
+EndGlobal
