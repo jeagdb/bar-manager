@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BarManagement.Models
 {
-    public class IObjectWithId
+    public interface IObjectWithId
     {
         long Id { get; set; }
     }
