@@ -7,14 +7,16 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
-using AutoMapper;
 using BarManagement.DataAccess;
+using AutoMapper;
 
 namespace BarManagement
 {
     public class Startup
     {
+        private string _connectionString;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,20 +29,22 @@ namespace BarManagement
         {
             services.AddControllersWithViews();
 
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new AutomapperProfiles());
-            });
+            services.AddEntityFrameworkSqlServer()
+                        .AddDbContext<DataAccess.EfModels.barDBContext>(options => options.UseSqlServer(_connectionString));
 
-            IMapper mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
+            services.AddAutoMapper(typeof(DataAccess.AutomapperProfiles));
+            services.AddRazorPages();
+            services.AddControllers();
 
-            services.AddMvc();
+            services.AddTransient<DataAccess.Interfaces.IDrinksRepository, DrinksRepository>();
+            services.AddTransient<DataAccess.Interfaces.IStocksRepository, StocksRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            _connectionString = Configuration.GetConnectionString("barDB");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -60,9 +64,7 @@ namespace BarManagement
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }

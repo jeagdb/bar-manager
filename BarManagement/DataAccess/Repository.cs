@@ -28,7 +28,7 @@ namespace BarManagement.DataAccess
                 List<DBEntity> query = null;
                 if (String.IsNullOrEmpty(includeTables))
                 {
-                    query = await _set.AsNoTracking().ToListAsync();
+                    query = await _set.ToListAsync();
                 }
                 else
                 {

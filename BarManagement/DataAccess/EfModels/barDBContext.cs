@@ -8,6 +8,7 @@ namespace BarManagement.DataAccess.EfModels
     {
         public barDBContext()
         {
+
         }
 
         public barDBContext(DbContextOptions<barDBContext> options)
@@ -25,8 +26,7 @@ namespace BarManagement.DataAccess.EfModels
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=.\\sqlexpress;Initial Catalog=barDB;Trusted_Connection=True");
+                optionsBuilder.UseSqlServer("Server=.\\;Database=barDB;Trusted_Connection=True");
             }
         }
 
