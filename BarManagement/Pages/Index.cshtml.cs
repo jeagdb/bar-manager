@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,24 +32,29 @@ namespace BarManagement.Pages
         public List<Models.Drinks> Drinks { get; set; }
         public List<SelectListItem> DrinksOptions { get; set; }
 
+        public Boolean isBtnUpdateCliked { get; set; }
 
         public class FormDrinkModel
         {
             [BindProperty]
+            [Required]
             public string NAME { get; set; }
             [BindProperty]
+            [Required]
             public string BRAND { get; set; }
             [BindProperty]
+            [Required]
+
             public string CATEGORY { get; set; }
         }
         public class FormStockModel
         {
             [BindProperty]
-            public long DRINKID { get; set; }
+            [Required]
+            public string QUANTITY { get; set; }
             [BindProperty]
-            public long QUANTITY { get; set; }
-            [BindProperty]
-            public double PRICE { get; set; }
+            [Required]
+            public string PRICE { get; set; }
     }
 
         [BindProperty]
@@ -71,6 +77,7 @@ namespace BarManagement.Pages
             Stocks = _stocksRepository.GetStocks();
             var CopyDrinks = new List<Models.Drinks>(Drinks);
             DrinksOptions = CopyDrinks.Select(drink => new SelectListItem { Value = drink.Id.ToString(), Text = drink.Name }).ToList();
+            isBtnUpdateCliked = false;
         }
 
         public async Task<IActionResult> OnPostDrinks()
@@ -92,10 +99,16 @@ namespace BarManagement.Pages
             {
                 return Page();
             }
-            Models.Drinks drink = Drinks[(int)FormStock.DRINKID];
-            var stock = await _stocksRepository.Insert(new Models.Stocks() { DrinkId = drink.Id, Price = FormStock.PRICE, Quantity = FormStock.QUANTITY});
+            var drinkId = Int32.Parse(Request.Form["drinkSelected"]);
+            Models.Drinks drink = Drinks.First(drink => drink.Id == drinkId);
+            var stock = await _stocksRepository.Insert(new Models.Stocks() { DrinkId = drink.Id, Price = Double.Parse((FormStock.PRICE).Replace('.',',')), Quantity = Int32.Parse(FormStock.QUANTITY)});
             stock.Drink = drink;
             return Redirect("./Index");
+        }
+
+        protected void btnUpdateStock_Click(object sender, EventArgs e)
+        {
+            isBtnUpdateCliked = true;
         }
     }
 }
