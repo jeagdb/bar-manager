@@ -72,20 +72,16 @@
                             @Html.DisplayFor(modelItem => item.Price)
                         </td>
                         <td>
-                            @if (Model.isBtnUpdateCliked)
-                            {
-                                <form method="post">
-                                    <input asp-for="FormStock.QUANTITY" />
-                                    <input asp-for="FormStock.PRICE" />
-                                    <input asp-page-handler="UpdateStock" asp-route-id="@item.Id" type="submit" value="Update Stock">
-                                </form>
-                            }
-                            @if (!Model.isBtnUpdateCliked)
-                            {
-                                <form method="post">
-                                    <input asp-page-handler="IsClicked" type="submit" value="MIS A JOUR">
-                                </form>
-                           }
+                             <form method="post">
+                                <input asp-for="FormStock.QUANTITY" />
+                                <input asp-for="FormStock.PRICE" />
+                                <input asp-page-handler="UpdateStock" asp-route-id="@item.Id" type="submit" value="Update Stock">
+                              </form>
+                        </td>
+                        <td>
+                             <form method="post">
+                                <input asp-page-handler="RemoveStock" asp-route-id="@item.Id" type="submit" value="X">
+                              </form>
                         </td>
                     </tr>
                 }
@@ -115,17 +111,26 @@
             <tbody>
                 @foreach (var item in Model.Drinks)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Brand)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Category)
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Brand)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category)
+                    </td>
+                    <td>
+                        <form method="post">
+                            <input asp-page-handler="RemoveDrink" asp-route-id="@item.Id" type="submit" value="X">
+                        </form>
+                        @if (!Model.isDelete)
+                        {
+                            <p>Attention, suppression impossible : il existe un stock de cette boisson.</p>
+                        }
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

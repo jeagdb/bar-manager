@@ -32,7 +32,7 @@ namespace BarManagement.Pages
         public List<Models.Drinks> Drinks { get; set; }
         public List<SelectListItem> DrinksOptions { get; set; }
 
-        public Boolean isBtnUpdateCliked { get; set; }
+        public bool isDelete { get; set; }
 
         public class FormDrinkModel
         {
@@ -77,7 +77,7 @@ namespace BarManagement.Pages
             Stocks = _stocksRepository.GetStocks();
             var CopyDrinks = new List<Models.Drinks>(Drinks);
             DrinksOptions = CopyDrinks.Select(drink => new SelectListItem { Value = drink.Id.ToString(), Text = drink.Name }).ToList();
-            isBtnUpdateCliked = false;
+            isDelete = true;
         }
 
         public async Task<IActionResult> OnPostDrinks()
@@ -106,11 +106,6 @@ namespace BarManagement.Pages
             return Redirect("./Index");
         }
 
-        protected void OnPostIsClicked()
-        {
-            isBtnUpdateCliked = true;
-        }
-
         public async Task<IActionResult> OnPostUpdateStock(long id)
         {
             ModelState.MarkAllFieldsAsSkipped();
@@ -121,7 +116,17 @@ namespace BarManagement.Pages
             }
             Models.Drinks drink = Drinks.First(drink => drink.Id == id);
             var stock = await _stocksRepository.Update(new Models.Stocks() { DrinkId = drink.Id, Price = Double.Parse((FormStock.PRICE).Replace('.', ',')), Quantity = Int32.Parse(FormStock.QUANTITY) });
-            isBtnUpdateCliked = false;
+            return Redirect("./Index");
+        }
+
+        public async Task<IActionResult> OnPostRemoveStock(long id)
+        {
+            await _stocksRepository.Delete(id);
+            return Redirect("./Index");
+        }
+        public async Task<IActionResult> OnPostRemoveDrink(long id)
+        {   
+            isDelete = await _drinksRepository.Delete(id);
             return Redirect("./Index");
         }
     }
