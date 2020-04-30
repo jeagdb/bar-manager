@@ -38,6 +38,7 @@ namespace BarManagement
 
             services.AddTransient<DataAccess.Interfaces.IDrinksRepository, DrinksRepository>();
             services.AddTransient<DataAccess.Interfaces.IStocksRepository, StocksRepository>();
+            services.AddTransient<DataAccess.Interfaces.ICocktailsRepository, CocktailsRepository>();
 
         }
 
