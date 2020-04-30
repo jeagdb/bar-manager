@@ -18,10 +18,13 @@ namespace BarManagement.Pages
         public List<Models.Cocktails> Cocktails { get; set; }
         public List<Models.Drinks> Drinks { get; set; }
         public List<SelectListItem> DrinksOptions { get; set; }
+
+        public List<Models.CocktailsComposition> Compositions;
         public CocktailsModel(DataAccess.Interfaces.ICocktailsRepository cocktailsRepository, DataAccess.Interfaces.IDrinksRepository drinksRepository)
         {
             _cocktailsRepository = cocktailsRepository;
             _drinksRepository = drinksRepository;
+            Compositions = new List<Models.CocktailsComposition>();
         }
 
         public class FormCocktailModel
@@ -54,6 +57,15 @@ namespace BarManagement.Pages
             await _cocktailsRepository.Insert(new Models.Cocktails() { Name = FormCocktail.NAME, PriceToSell = Double.Parse(FormCocktail.PRICE) });
             return Redirect("./Cocktails");
         }
+        public async Task OnPostAddIngredient()
+        {
+            Compositions.Add(new Models.CocktailsComposition());
+        }
+        public async Task OnPostRemoveIngredient(int index)
+        {
+            Compositions.RemoveAt(index);
+        }
+
         public async Task<IActionResult> OnPostUpdateCocktail(long id)
         {
             ModelState.MarkAllFieldsAsSkipped();

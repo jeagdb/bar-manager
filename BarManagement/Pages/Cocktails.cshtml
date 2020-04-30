@@ -12,6 +12,22 @@
     <form method="post">
         <input asp-for="FormCocktail.NAME" />
         <input asp-for="FormCocktail.PRICE" />
+        @if (Model.Compositions != null)
+        {
+            for (int i = 0; i < Model.Compositions.Count; i++)
+            {
+                <input asp-for="@i" type="hidden" />
+                <div class="form-group">
+                    <label>Ingredient</label>
+                    <input type="text" class="form-control" asp-for="Compositions[i].Quantity" placeholder="Enter quantity">
+                    <span asp-validation-for="Compositions[i].Quantity"></span>
+                </div>
+
+                <button type="submit" asp-page-handler="removeIngredient" asp-route-index="@i">Remove Ingredient</button>
+            }
+        }
+        <button type="submit" asp-page-handler="addIngredient">Add Ingredient</button>
+
         <input asp-page-handler="Cocktails" type="submit" value="Create cocktail">
     </form>
 </div>

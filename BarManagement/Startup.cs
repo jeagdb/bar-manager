@@ -39,7 +39,6 @@ namespace BarManagement
             services.AddTransient<DataAccess.Interfaces.IDrinksRepository, DrinksRepository>();
             services.AddTransient<DataAccess.Interfaces.IStocksRepository, StocksRepository>();
             services.AddTransient<DataAccess.Interfaces.ICocktailsRepository, CocktailsRepository>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
