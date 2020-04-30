@@ -4,6 +4,12 @@
     ViewData["Title"] = "Index";
 }
 
+    <script>
+        function UpdateStock_Click() {
+            $(this).
+        }
+    </script>
+
 <div class="text-center">
     <h1 class="display-4">GESTION DU STOCK</h1>
 </div>
@@ -44,41 +50,44 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Stocks.ElementAt(0).Price)
                     </th>
-                    <th></th>
+                    <th>
+                        ACTIONS
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.Stocks)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Drink.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Drink.Brand)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quantity)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        @if (Model.isBtnUpdateCliked)
-                        {
-                            <form method="post">
-                                <select name="drinkSelected" asp-items="Model.DrinksOptions"></select>
-                                <input asp-for="FormStock.QUANTITY" />
-                                <input asp-for="FormStock.PRICE" />
-                                <input asp-page-handler="UpdateStock" type="submit" value="Update Stock">
-                            </form>
-                        }
-                        @if (!Model.isBtnUpdateCliked)
-                        {
-                            <asp:Button runat="server" id="btnUpdateStock" Text="MIS A JOUR" OnClick="btnUpdateStock_Click" />
-                        }
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Drink.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Drink.Brand)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @if (Model.isBtnUpdateCliked)
+                            {
+                                <form method="post">
+                                    <input asp-for="FormStock.QUANTITY" />
+                                    <input asp-for="FormStock.PRICE" />
+                                    <input asp-page-handler="UpdateStock" asp-route-id="@item.Id" type="submit" value="Update Stock">
+                                </form>
+                            }
+                            @if (!Model.isBtnUpdateCliked)
+                            {
+                                <form method="post">
+                                    <input asp-page-handler="IsClicked" type="submit" value="MIS A JOUR">
+                                </form>
+                           }
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -106,17 +115,17 @@
             <tbody>
                 @foreach (var item in Model.Drinks)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Brand)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Category)
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Brand)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category)
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>

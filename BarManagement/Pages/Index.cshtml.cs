@@ -106,9 +106,23 @@ namespace BarManagement.Pages
             return Redirect("./Index");
         }
 
-        protected void btnUpdateStock_Click(object sender, EventArgs e)
+        protected void OnPostIsClicked()
         {
             isBtnUpdateCliked = true;
+        }
+
+        public async Task<IActionResult> OnPostUpdateStock(long id)
+        {
+            ModelState.MarkAllFieldsAsSkipped();
+            Drinks = _drinksRepository.GetDrinks();
+            if (!TryValidateModel(FormStock, nameof(FormStock)) || Drinks == null)
+            {
+                return Page();
+            }
+            Models.Drinks drink = Drinks.First(drink => drink.Id == id);
+            var stock = await _stocksRepository.Update(new Models.Stocks() { DrinkId = drink.Id, Price = Double.Parse((FormStock.PRICE).Replace('.', ',')), Quantity = Int32.Parse(FormStock.QUANTITY) });
+            isBtnUpdateCliked = false;
+            return Redirect("./Index");
         }
     }
 }
