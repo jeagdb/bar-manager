@@ -4,5 +4,58 @@
     ViewData["Title"] = "Transactions";
 }
 
-<h1>Transactions</h1>
 
+<div class="text-center">
+    <h1 class="display-4">TRANSACTIONS</h1>
+</div>
+@if (Model.Transactions != null && Model.Transactions.Count > 0)
+{
+    <div class="text-center">
+        <h2>TRANSACTIONS</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Transactions.ElementAt(0).Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Transactions.ElementAt(0).Value)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.Transactions.Count; i++)
+                {
+                    var currentIndex = Model.Transactions.Count - 1 - i;
+                    @if (Model.Transactions[currentIndex].Value > 0.0)
+                    {
+                        <tr style="background-color: rgba(43, 155, 55, 0.4); border-bottom: solid; border-bottom-color: #ddd;">
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Transactions[currentIndex].Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Transactions[currentIndex].Value)
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr style="background-color: rgba(162, 25, 25, 0.4); border-bottom: solid; border-bottom-color: #ddd;">
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Transactions[currentIndex].Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Transactions[currentIndex].Value)
+                            </td>
+                        </tr>
+                    }
+                }
+                @foreach (var item in Model.Transactions)
+                {
+
+
+                }
+            </tbody>
+        </table>
+    </div>
+}

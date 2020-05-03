@@ -25,6 +25,7 @@ namespace BarManagement.Pages
     public class StocksModel : PageModel
     {
         private readonly DataAccess.Interfaces.IStocksRepository _stocksRepository;
+        private readonly DataAccess.Interfaces.ITransactionsRepository _transactionsRepository;
         private readonly DataAccess.Interfaces.IDrinksRepository _drinksRepository;
         public List<Models.Stocks> Stocks { get; set; }
         public List<Models.Drinks> Drinks { get; set; }
@@ -62,10 +63,13 @@ namespace BarManagement.Pages
         public FormStockModel FormStock { get; set; }
 
 
-        public StocksModel(DataAccess.Interfaces.IStocksRepository stocksRepository, DataAccess.Interfaces.IDrinksRepository drinksRepository)
+        public StocksModel(DataAccess.Interfaces.IStocksRepository stocksRepository,
+            DataAccess.Interfaces.IDrinksRepository drinksRepository,
+            DataAccess.Interfaces.ITransactionsRepository transactionsRepository)
         {
             _stocksRepository = stocksRepository;
             _drinksRepository = drinksRepository;
+            _transactionsRepository = transactionsRepository;
         }
 
         public void OnGetAsync()
@@ -99,6 +103,7 @@ namespace BarManagement.Pages
             var drinkId = Int32.Parse(Request.Form["drinkSelected"]);
             Models.Drinks drink = Drinks.First(drink => drink.Id == drinkId);
             var stock = await _stocksRepository.Insert(new Models.Stocks() { DrinkId = drink.Id, Price = Double.Parse((FormStock.PRICE).Replace('.', ',')), Quantity = Int32.Parse(FormStock.QUANTITY) });
+            var transaction = await _transactionsRepository.Insert(new Models.Transactions() { SellDate = DateTime.Now, Value = Double.Parse((FormStock.PRICE).Replace('.', ',')) });
             stock.Drink = drink;
             return Redirect("./Index");
         }
