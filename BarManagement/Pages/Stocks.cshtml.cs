@@ -103,7 +103,7 @@ namespace BarManagement.Pages
             var drinkId = Int32.Parse(Request.Form["drinkSelected"]);
             Models.Drinks drink = Drinks.First(drink => drink.Id == drinkId);
             var stock = await _stocksRepository.Insert(new Models.Stocks() { DrinkId = drink.Id, Price = Double.Parse((FormStock.PRICE).Replace('.', ',')), Quantity = Int32.Parse(FormStock.QUANTITY) });
-            var transaction = await _transactionsRepository.Insert(new Models.Transactions() { SellDate = DateTime.Now, Value = Double.Parse((FormStock.PRICE).Replace('.', ',')) });
+            var transaction = await _transactionsRepository.Insert(new Models.Transactions() { SellDate = DateTime.Now, Value = - Double.Parse((FormStock.PRICE).Replace('.', ',')) });
             stock.Drink = drink;
             return Redirect("./Index");
         }

@@ -4,58 +4,69 @@
     ViewData["Title"] = "Transactions";
 }
 
-
 <div class="text-center">
-    <h1 class="display-4">TRANSACTIONS</h1>
+    <div style="display: flex">
+        <img style="margin: auto; max-width: 50px" src="https://images.vexels.com/media/users/3/143188/isolated/preview/5f44f3160a09b51b4fa4634ecdff62dd-money-icon-by-vexels.png" alt="money" />
+        <h1 style="margin: auto">Argent dans la caisse : @Model.currentMoney</h1>
+    </div>
 </div>
+<br/>
+<div class="text-center">
+    <h1>AJOUT UN FOND DE CAISSE</h1>
+    <form method="post">
+        <input asp-for="FormBalance.BALANCE" />
+        <input asp-page-handler="Transactions" type="submit" value="Add balance">
+    </form>
+</div>
+<br />
 @if (Model.Transactions != null && Model.Transactions.Count > 0)
 {
-    <div class="text-center">
-        <h2>TRANSACTIONS</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Transactions.ElementAt(0).Id)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Transactions.ElementAt(0).Value)
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (var i = 0; i < Model.Transactions.Count; i++)
+<div class="text-center">
+    <h1 class="display-4">TRANSACTIONS</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Transactions.ElementAt(0).Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Transactions.ElementAt(0).Value)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.Transactions.Count; i++)
+            {
+                var currentIndex = Model.Transactions.Count - 1 - i;
+                @if (Model.Transactions[currentIndex].Value > 0.0)
                 {
-                    var currentIndex = Model.Transactions.Count - 1 - i;
-                    @if (Model.Transactions[currentIndex].Value > 0.0)
-                    {
-                        <tr style="background-color: rgba(43, 155, 55, 0.4); border-bottom: solid; border-bottom-color: #ddd;">
-                            <td>
-                                @Html.DisplayFor(modelItem => Model.Transactions[currentIndex].Id)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => Model.Transactions[currentIndex].Value)
-                            </td>
-                        </tr>
-                    }
-                    else
-                    {
-                        <tr style="background-color: rgba(162, 25, 25, 0.4); border-bottom: solid; border-bottom-color: #ddd;">
-                            <td>
-                                @Html.DisplayFor(modelItem => Model.Transactions[currentIndex].Id)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => Model.Transactions[currentIndex].Value)
-                            </td>
-                        </tr>
-                    }
+                    <tr style="background-color: rgba(43, 155, 55, 0.4); border-bottom: solid; border-bottom-color: #ddd;">
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.Transactions[currentIndex].Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.Transactions[currentIndex].Value)
+                        </td>
+                    </tr>
                 }
-                @foreach (var item in Model.Transactions)
+                else
                 {
+                    <tr style="background-color: rgba(162, 25, 25, 0.4); border-bottom: solid; border-bottom-color: #ddd;">
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.Transactions[currentIndex].Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.Transactions[currentIndex].Value)
+                        </td>
+                    </tr>
+                }
+            }
+            @foreach (var item in Model.Transactions)
+            {
 
 
-                }
-            </tbody>
-        </table>
-    </div>
+            }
+        </tbody>
+    </table>
+</div>
 }
