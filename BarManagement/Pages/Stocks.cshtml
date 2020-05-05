@@ -10,8 +10,11 @@
 <div class="text-center">
     <h1>AJOUT D'UNE BOISSON</h1>
     <form method="post">
+        <label>Nom</label>
         <input asp-for="FormDrink.NAME" />
+        <label>Marque</label>
         <input asp-for="FormDrink.BRAND" />
+        <label>Catégorie</label>
         <input asp-for="FormDrink.CATEGORY" />
         <input asp-page-handler="Drinks" type="submit" value="Create drink">
     </form>
@@ -20,8 +23,12 @@
     <h1>AJOUT D'UN STOCK DE BOISSON</h1>
     <form method="post">
         <select name="drinkSelected" asp-items="Model.DrinksOptions"></select>
-        <input asp-for="FormStock.QUANTITY" />
+        <label>Contenance par unité (cl)</label>
+        <input asp-for="FormStock.CAPACITY" />
+        <label>Prix d'une unité</label>
         <input asp-for="FormStock.PRICE" />
+        <label>Nombre d'unités</label>
+        <input asp-for="FormStock.NUMBER" />
         <input asp-page-handler="Stocks" type="submit" value="Create Stock">
     </form>
 </div>
@@ -33,16 +40,16 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.Stocks.ElementAt(0).Drink.Name)
+                        Nom
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Stocks.ElementAt(0).Drink.Brand)
+                        Marque
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Stocks.ElementAt(0).Quantity)
+                        Quantité (cl)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Stocks.ElementAt(0).Price)
+                        Prix (€/cl)
                     </th>
                     <th>
                         ACTIONS
@@ -67,8 +74,12 @@
                         </td>
                         <td>
                             <form method="post">
-                                <input asp-for="FormStock.QUANTITY" />
+                                <label>Contenance par unité (cl)</label>
+                                <input asp-for="FormStock.CAPACITY" />
+                                <label>Prix d'une unité</label>
                                 <input asp-for="FormStock.PRICE" />
+                                <label>Nombre d'unités</label>
+                                <input asp-for="FormStock.NUMBER" />
                                 <input asp-page-handler="UpdateStock" asp-route-id="@item.Id" type="submit" value="Update Stock">
                             </form>
                         </td>
@@ -98,7 +109,7 @@
                         @Html.DisplayNameFor(model => model.Drinks.ElementAt(0).Brand)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Drinks.ElementAt(0).Brand)
+                        @Html.DisplayNameFor(model => model.Drinks.ElementAt(0).Category)
                     </th>
                 </tr>
             </thead>

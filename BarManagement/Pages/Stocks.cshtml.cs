@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 
 namespace BarManagement.Pages
@@ -49,7 +50,11 @@ namespace BarManagement.Pages
         {
             [BindProperty]
             [Required]
-            public string QUANTITY { get; set; }
+            public string CAPACITY { get; set; }
+
+            [BindProperty]
+            [Required]
+            public string NUMBER { get; set; }
             [BindProperty]
             [Required]
             public string PRICE { get; set; }
@@ -89,7 +94,7 @@ namespace BarManagement.Pages
                 return Page();
             }
             await _drinksRepository.Insert(new Models.Drinks() { Name = FormDrink.NAME, Brand = FormDrink.BRAND, Category = FormDrink.CATEGORY });
-            return Redirect("./Index");
+            return Redirect("./Stocks");
         }
 
         public async Task<IActionResult> OnPostStocks()
@@ -102,10 +107,14 @@ namespace BarManagement.Pages
             }
             var drinkId = Int32.Parse(Request.Form["drinkSelected"]);
             Models.Drinks drink = Drinks.First(drink => drink.Id == drinkId);
-            var stock = await _stocksRepository.Insert(new Models.Stocks() { DrinkId = drink.Id, Price = Double.Parse((FormStock.PRICE).Replace('.', ',')), Quantity = Int32.Parse(FormStock.QUANTITY) });
-            var transaction = await _transactionsRepository.Insert(new Models.Transactions() { SellDate = DateTime.Now, Value = - Double.Parse((FormStock.PRICE).Replace('.', ',')) });
+
+            long quantity = calculateTotalQuantity(Int32.Parse(FormStock.NUMBER), Int32.Parse(FormStock.CAPACITY));
+            double pricePerCl = calculatePricePerCl(Double.Parse((FormStock.PRICE).Replace('.', ',')), Int32.Parse(FormStock.CAPACITY));
+
+            var stock = await _stocksRepository.Insert(new Models.Stocks() { DrinkId = drink.Id, Price = pricePerCl, Quantity = quantity });
+            var transaction = await _transactionsRepository.Insert(new Models.Transactions() { SellDate = DateTime.Now, Value = - (Double.Parse((FormStock.PRICE).Replace('.', ',')) * Int32.Parse(FormStock.NUMBER)) });
             stock.Drink = drink;
-            return Redirect("./Index");
+            return Redirect("./Stocks");
         }
 
         public async Task<IActionResult> OnPostUpdateStock(long id)
@@ -117,19 +126,34 @@ namespace BarManagement.Pages
                 return Page();
             }
             Models.Drinks drink = Drinks.First(drink => drink.Id == id);
-            var stock = await _stocksRepository.Update(new Models.Stocks() { DrinkId = drink.Id, Price = Double.Parse((FormStock.PRICE).Replace('.', ',')), Quantity = Int32.Parse(FormStock.QUANTITY) });
-            return Redirect("./Index");
+
+            long quantity = calculateTotalQuantity(Int32.Parse(FormStock.NUMBER), Int32.Parse(FormStock.CAPACITY));
+            double pricePerCl = calculatePricePerCl(Double.Parse((FormStock.PRICE).Replace('.', ',')), quantity);
+
+            var stock = await _stocksRepository.Update(new Models.Stocks() { DrinkId = drink.Id, Price = pricePerCl, Quantity = quantity });
+
+            return Redirect("./Stocks");
         }
 
         public async Task<IActionResult> OnPostRemoveStock(long id)
         {
             await _stocksRepository.Delete(id);
-            return Redirect("./Index");
+            return Redirect("./Stocks");
         }
         public async Task<IActionResult> OnPostRemoveDrink(long id)
         {
             isDelete = await _drinksRepository.Delete(id);
-            return Redirect("./Index");
+            return Redirect("./Stocks");
+        }
+
+        public double calculatePricePerCl(double priceQuantity, long quantity)
+        {
+            return Math.Round(priceQuantity / quantity, 3);
+        }
+
+       public long calculateTotalQuantity(long capacity, long number)
+        {
+            return capacity * number;
         }
     }
 }
