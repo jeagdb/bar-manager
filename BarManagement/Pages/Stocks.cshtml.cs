@@ -91,7 +91,7 @@ namespace BarManagement.Pages
             ModelState.MarkAllFieldsAsSkipped();
             if (!TryValidateModel(FormDrink, nameof(FormDrink)))
             {
-                return Page();
+                return Redirect("./Stocks");
             }
             await _drinksRepository.Insert(new Models.Drinks() { Name = FormDrink.NAME, Brand = FormDrink.BRAND, Category = FormDrink.CATEGORY });
             return Redirect("./Stocks");
@@ -103,7 +103,7 @@ namespace BarManagement.Pages
             Drinks = _drinksRepository.GetDrinks();
             if (!TryValidateModel(FormStock, nameof(FormStock)) || Drinks == null)
             {
-                return Page();
+                return Redirect("./Stocks");
             }
             var drinkId = Int32.Parse(Request.Form["drinkSelected"]);
             Models.Drinks drink = Drinks.First(drink => drink.Id == drinkId);
@@ -120,17 +120,19 @@ namespace BarManagement.Pages
         public async Task<IActionResult> OnPostUpdateStock(long id)
         {
             ModelState.MarkAllFieldsAsSkipped();
-            Drinks = _drinksRepository.GetDrinks();
-            if (!TryValidateModel(FormStock, nameof(FormStock)) || Drinks == null)
+            Stocks = _stocksRepository.GetStocks();
+            if (!TryValidateModel(FormStock, nameof(FormStock)) || Stocks == null)
             {
-                return Page();
+                return Redirect("./Stocks");
             }
-            Models.Drinks drink = Drinks.First(drink => drink.Id == id);
+            Models.Stocks stock = Stocks.First(stock => stock.Id == id);
 
             long quantity = calculateTotalQuantity(Int32.Parse(FormStock.NUMBER), Int32.Parse(FormStock.CAPACITY));
-            double pricePerCl = calculatePricePerCl(Double.Parse((FormStock.PRICE).Replace('.', ',')), quantity);
+            double pricePerCl = calculatePricePerCl(Double.Parse((FormStock.PRICE).Replace('.', ',')), Int32.Parse(FormStock.CAPACITY));
+            stock.Price = pricePerCl;
+            stock.Quantity = quantity;
 
-            var stock = await _stocksRepository.Update(new Models.Stocks() { DrinkId = drink.Id, Price = pricePerCl, Quantity = quantity });
+            await _stocksRepository.Update(stock);
 
             return Redirect("./Stocks");
         }

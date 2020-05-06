@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using BarManagement.DataAccess;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace BarManagement
 {
@@ -35,7 +37,15 @@ namespace BarManagement
             services.AddAutoMapper(typeof(DataAccess.AutomapperProfiles));
             services.AddRazorPages();
             services.AddControllers();
+            services.AddSession(options =>
+            {
+                options.Cookie.HttpOnly = true;
+            });
+            services.AddMemoryCache();
+            services.AddMvc()
+                .AddSessionStateTempDataProvider();
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<DataAccess.Interfaces.IDrinksRepository, DrinksRepository>();
             services.AddTransient<DataAccess.Interfaces.IStocksRepository, StocksRepository>();
             services.AddTransient<DataAccess.Interfaces.ICocktailsRepository, CocktailsRepository>();
@@ -58,10 +68,11 @@ namespace BarManagement
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseRouting();
-
             app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

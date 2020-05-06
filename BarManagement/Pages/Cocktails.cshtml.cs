@@ -5,11 +5,30 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Web;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace BarManagement.Pages
 {
+    public static class SessionExtensions
+    {
+        public static T GetComplexData<T>(this ISession session, string key)
+        {
+            var data = session.GetString(key);
+            if (data == null)
+            {
+                return default(T);
+            }
+            return JsonConvert.DeserializeObject<T>(data);
+        }
+
+        public static void SetComplexData(this ISession session, string key, object value)
+        {
+            session.SetString(key, JsonConvert.SerializeObject(value));
+        }
+    }
     public class CocktailsModel : PageModel
     {
         private readonly DataAccess.Interfaces.IDrinksRepository _drinksRepository;
@@ -18,8 +37,8 @@ namespace BarManagement.Pages
         public List<Models.Cocktails> Cocktails { get; set; }
         public List<Models.Drinks> Drinks { get; set; }
         public List<SelectListItem> DrinksOptions { get; set; }
-
-        public List<Models.CocktailsComposition> Compositions;
+        [BindProperty]
+        public List<Models.CocktailsComposition> Compositions { get; set; }
         public CocktailsModel(DataAccess.Interfaces.ICocktailsRepository cocktailsRepository, DataAccess.Interfaces.IDrinksRepository drinksRepository)
         {
             _cocktailsRepository = cocktailsRepository;
@@ -44,8 +63,6 @@ namespace BarManagement.Pages
         {
             Drinks = _drinksRepository.GetDrinks();
             Cocktails = _cocktailsRepository.GetCocktails();
-            var CopyDrinks = new List<Models.Drinks>(Drinks);
-            DrinksOptions = CopyDrinks.Select(drink => new SelectListItem { Value = drink.Id.ToString(), Text = drink.Name }).ToList();
         }
         public async Task<IActionResult> OnPostCocktails()
         {
@@ -57,11 +74,14 @@ namespace BarManagement.Pages
             await _cocktailsRepository.Insert(new Models.Cocktails() { Name = FormCocktail.NAME, PriceToSell = Double.Parse(FormCocktail.PRICE) });
             return Redirect("./Cocktails");
         }
-        public async Task OnPostAddIngredient()
+        public void OnPostAdd()
         {
+            Drinks = _drinksRepository.GetDrinks();
+            var CopyDrinks = new List<Models.Drinks>(Drinks);
+            DrinksOptions = CopyDrinks.Select(drink => new SelectListItem { Value = drink.Id.ToString(), Text = drink.Name }).ToList();
             Compositions.Add(new Models.CocktailsComposition());
         }
-        public async Task OnPostRemoveIngredient(int index)
+        public void OnPostRemove(int index)
         {
             Compositions.RemoveAt(index);
         }

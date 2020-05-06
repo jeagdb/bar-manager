@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Cocktails";
 }
+@using Microsoft.AspNetCore.Http;
+
 
 <div class="text-center">
     <h1 class="display-4">GESTION DE LA CARTE</h1>
@@ -10,7 +12,9 @@
 <div class="text-center">
     <h1>AJOUT D'UNE RECETTE</h1>
     <form method="post">
+        <label>Nom</label>
         <input asp-for="FormCocktail.NAME" />
+        <label>Prix de vente</label>
         <input asp-for="FormCocktail.PRICE" />
         @if (Model.Compositions != null)
         {
@@ -18,17 +22,18 @@
             {
                 <input asp-for="@i" type="hidden" />
                 <div class="form-group">
-                    <label>Ingredient</label>
+                    <label>Boisson</label>
+                    <select name="drinkSelected" asp-items="Model.DrinksOptions"></select>
+                    <label>Quantité (cl)</label>
                     <input type="text" class="form-control" asp-for="Compositions[i].Quantity" placeholder="Enter quantity">
                     <span asp-validation-for="Compositions[i].Quantity"></span>
                 </div>
 
-                <button type="submit" asp-page-handler="removeIngredient" asp-route-index="@i">Remove Ingredient</button>
+                <button type="submit" asp-page-handler="remove" asp-route-index="@i">Suppression de cet ingredient</button>
             }
         }
-        <button type="submit" asp-page-handler="addIngredient">Add Ingredient</button>
-
-        <input asp-page-handler="Cocktails" type="submit" value="Create cocktail">
+        <button type="submit" asp-page-handler="add">Ajout d'ingredient</button>
+        <input asp-page-handler="Cocktails" type="submit" value="Création du cocktail">
     </form>
 </div>
 
@@ -62,7 +67,9 @@
                         </td>
                         <td>
                             <form method="post">
+                                <label>Nom</label>
                                 <input asp-for="FormCocktail.NAME" />
+                                <label>Prix de vente</label>
                                 <input asp-for="FormCocktail.PRICE" />
                                 <input asp-page-handler="UpdateCocktail" asp-route-id="@item.Id" type="submit" value="Update Cocktail">
                             </form>
