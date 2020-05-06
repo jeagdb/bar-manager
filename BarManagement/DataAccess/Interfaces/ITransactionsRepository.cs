@@ -8,5 +8,6 @@ namespace BarManagement.DataAccess.Interfaces
     public interface ITransactionsRepository : IRepository<EfModels.Transactions, Models.Transactions>
     {
         List<Models.Transactions> GetTransactions();
+        List<Models.Transactions> GetTransactionsByCocktail(int id);
     }
 }

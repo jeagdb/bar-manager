@@ -8,7 +8,6 @@ namespace BarManagement.DataAccess.EfModels
     {
         public barDBContext()
         {
-
         }
 
         public barDBContext(DbContextOptions<barDBContext> options)
@@ -26,7 +25,8 @@ namespace BarManagement.DataAccess.EfModels
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=.\\;Database=barDB;Trusted_Connection=True");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Data Source=.\\;Database=barDB;Trusted_Connection=True");
             }
         }
 
@@ -114,11 +114,18 @@ namespace BarManagement.DataAccess.EfModels
             {
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.CocktailId).HasColumnName("cocktail_id");
+
                 entity.Property(e => e.SellDate)
                     .HasColumnName("sell_date")
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.Value).HasColumnName("value");
+
+                entity.HasOne(d => d.Cocktail)
+                    .WithMany(p => p.Transactions)
+                    .HasForeignKey(d => d.CocktailId)
+                    .HasConstraintName("FK_Transactions_Cocktails");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -4,5 +4,46 @@
     ViewData["Title"] = "Stats";
 }
 
-<h1>Statistiques</h1>
+<div class="text-center">
+    <h1 class="display-4">STATISTIQUES</h1>
+</div>
+<div class="text-center">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Boissons
+                </th>
+                <th>
+                    Nombre de verres vendu
+                </th>
+                <th>
+                    Bénéfices
+                </th>
+                <th>
+                    Rentabilités
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.Cocktails.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Model.Cocktails[i].Name
+                    </td>
+                    <td>
+                        nb de verres
+                    </td>
+                    <td>
+                        bénéfices
+                    </td>
+                    <td>
+                        rentabilité
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 

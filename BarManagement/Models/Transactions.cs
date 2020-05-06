@@ -10,5 +10,8 @@ namespace BarManagement.Models
         public long Id { get; set; }
         public DateTime SellDate { get; set; }
         public double Value { get; set; }
+        public long? CocktailId { get; set; }
+
+        public virtual Cocktails Cocktail { get; set; }
     }
 }

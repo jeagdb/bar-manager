@@ -107,12 +107,11 @@ namespace BarManagement.Pages
             }
             var drinkId = Int32.Parse(Request.Form["drinkSelected"]);
             Models.Drinks drink = Drinks.First(drink => drink.Id == drinkId);
-
             long quantity = calculateTotalQuantity(Int32.Parse(FormStock.NUMBER), Int32.Parse(FormStock.CAPACITY));
             double pricePerCl = calculatePricePerCl(Double.Parse((FormStock.PRICE).Replace('.', ',')), Int32.Parse(FormStock.CAPACITY));
 
             var stock = await _stocksRepository.Insert(new Models.Stocks() { DrinkId = drink.Id, Price = pricePerCl, Quantity = quantity });
-            var transaction = await _transactionsRepository.Insert(new Models.Transactions() { SellDate = DateTime.Now, Value = - (Double.Parse((FormStock.PRICE).Replace('.', ',')) * Int32.Parse(FormStock.NUMBER)) });
+            var transaction = await _transactionsRepository.Insert(new Models.Transactions() { SellDate = DateTime.Now, Value = -(Double.Parse((FormStock.PRICE).Replace('.', ',')) * Int32.Parse(FormStock.NUMBER)), CocktailId = null });
             stock.Drink = drink;
             return Redirect("./Stocks");
         }
