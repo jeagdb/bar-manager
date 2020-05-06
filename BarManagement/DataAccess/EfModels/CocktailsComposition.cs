@@ -5,6 +5,7 @@ namespace BarManagement.DataAccess.EfModels
 {
     public partial class CocktailsComposition
     {
+        public long Id { get; set; }
         public long CocktailId { get; set; }
         public long DrinkId { get; set; }
         public long Quantity { get; set; }

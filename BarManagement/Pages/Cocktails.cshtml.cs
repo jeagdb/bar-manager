@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Web;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using System.Composition;
 
 namespace BarManagement.Pages
 {
@@ -33,16 +34,20 @@ namespace BarManagement.Pages
     {
         private readonly DataAccess.Interfaces.IDrinksRepository _drinksRepository;
         private readonly DataAccess.Interfaces.ICocktailsRepository _cocktailsRepository;
+        private readonly DataAccess.Interfaces.ICocktailsCompositionRepository _cocktailsCompositionRepository;
 
         public List<Models.Cocktails> Cocktails { get; set; }
         public List<Models.Drinks> Drinks { get; set; }
         public List<SelectListItem> DrinksOptions { get; set; }
         [BindProperty]
         public List<Models.CocktailsComposition> Compositions { get; set; }
-        public CocktailsModel(DataAccess.Interfaces.ICocktailsRepository cocktailsRepository, DataAccess.Interfaces.IDrinksRepository drinksRepository)
+        public CocktailsModel(DataAccess.Interfaces.ICocktailsRepository cocktailsRepository,
+            DataAccess.Interfaces.IDrinksRepository drinksRepository,
+            DataAccess.Interfaces.ICocktailsCompositionRepository cocktailsCompositionRepository)
         {
             _cocktailsRepository = cocktailsRepository;
             _drinksRepository = drinksRepository;
+            _cocktailsCompositionRepository = cocktailsCompositionRepository;
             Compositions = new List<Models.CocktailsComposition>();
         }
 
@@ -67,11 +72,20 @@ namespace BarManagement.Pages
         public async Task<IActionResult> OnPostCocktails()
         {
             ModelState.MarkAllFieldsAsSkipped();
+            Drinks = _drinksRepository.GetDrinks();
             if (!TryValidateModel(FormCocktail, nameof(FormCocktail)))
             {
                 return Page();
             }
-            await _cocktailsRepository.Insert(new Models.Cocktails() { Name = FormCocktail.NAME, PriceToSell = Double.Parse(FormCocktail.PRICE) });
+            Models.Cocktails newCocktail = await _cocktailsRepository.Insert(new Models.Cocktails() { Name = FormCocktail.NAME, PriceToSell = Double.Parse(FormCocktail.PRICE) });
+            int index = 0;
+            foreach (Models.CocktailsComposition composition in Compositions)
+            {
+                var drinkId = Int32.Parse(Request.Form["drinkSelected_" + index ]);
+                Models.Drinks drink = Drinks.First(drink => drink.Id == drinkId);
+                await _cocktailsCompositionRepository.Insert(new Models.CocktailsComposition() { DrinkId = drink.Id, CocktailId = newCocktail.Id, Quantity = composition.Quantity });
+                index++;
+            }
             return Redirect("./Cocktails");
         }
         public void OnPostAdd()
@@ -83,6 +97,9 @@ namespace BarManagement.Pages
         }
         public void OnPostRemove(int index)
         {
+            Drinks = _drinksRepository.GetDrinks();
+            var CopyDrinks = new List<Models.Drinks>(Drinks);
+            DrinksOptions = CopyDrinks.Select(drink => new SelectListItem { Value = drink.Id.ToString(), Text = drink.Name }).ToList();
             Compositions.RemoveAt(index);
         }
 

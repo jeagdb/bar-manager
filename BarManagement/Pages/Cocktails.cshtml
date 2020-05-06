@@ -23,7 +23,7 @@
                 <input asp-for="@i" type="hidden" />
                 <div class="form-group">
                     <label>Boisson</label>
-                    <select name="drinkSelected" asp-items="Model.DrinksOptions"></select>
+                    <select name="drinkSelected_@i" asp-items="Model.DrinksOptions"></select>
                     <label>Quantité (cl)</label>
                     <input type="text" class="form-control" asp-for="Compositions[i].Quantity" placeholder="Enter quantity">
                     <span asp-validation-for="Compositions[i].Quantity"></span>

@@ -63,7 +63,7 @@
     <Build Include="dbo\Tables\Transactions.sql" />
     <Build Include="dbo\Tables\Stocks.sql" />
     <Build Include="dbo\Tables\Drinks.sql" />
-    <Build Include="dbo\Tables\Cocktails_Composition.sql" />
     <Build Include="dbo\Tables\Cocktails.sql" />
+    <Build Include="dbo\Tables\CocktailsComposition.sql" />
   </ItemGroup>
 </Project>

@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace BarManagement.Models
 {
-    public class CocktailsComposition
+    public class CocktailsComposition : IObjectWithId
     {
+        public long Id { get; set; }
         public long CocktailId { get; set; }
         public long DrinkId { get; set; }
         public long Quantity { get; set; }
