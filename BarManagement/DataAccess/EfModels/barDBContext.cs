@@ -45,13 +45,15 @@ namespace BarManagement.DataAccess.EfModels
                     .IsUnicode(false);
 
                 entity.Property(e => e.PriceToSell).HasColumnName("price_to_sell");
+                entity.Property(e => e.CocktailCategory)
+                    .HasColumnName("cocktailCategory")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<CocktailsComposition>(entity =>
             {
-                entity.HasNoKey();
-
-                entity.ToTable("Cocktails_Composition");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.CocktailId).HasColumnName("cocktail_id");
 
@@ -63,13 +65,13 @@ namespace BarManagement.DataAccess.EfModels
                     .WithMany()
                     .HasForeignKey(d => d.CocktailId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Cocktails_Composition_Cocktails");
+                    .HasConstraintName("FK_CocktailsComposition_Cocktails");
 
                 entity.HasOne(d => d.Drink)
                     .WithMany()
                     .HasForeignKey(d => d.DrinkId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Cocktails_Composition_Drinks");
+                    .HasConstraintName("FK_CocktailsComposition_Drinks");
             });
 
             modelBuilder.Entity<Drinks>(entity =>

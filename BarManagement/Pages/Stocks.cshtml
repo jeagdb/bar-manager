@@ -15,7 +15,7 @@
         <label>Marque</label>
         <input asp-for="FormDrink.BRAND" />
         <label>Catégorie</label>
-        <input asp-for="FormDrink.CATEGORY" />
+        <select name="categorySelected" asp-items="Model.CategoryOptions"></select>
         <input asp-page-handler="Drinks" type="submit" value="Create drink">
     </form>
 </div>

@@ -7,5 +7,6 @@ namespace BarManagement.DataAccess.Interfaces
 {
     public interface ICocktailsCompositionRepository : IRepository<EfModels.CocktailsComposition, Models.CocktailsComposition>
     {
+        List<Models.CocktailsComposition> getCompositionByCocktailId(long id);
     }
 }

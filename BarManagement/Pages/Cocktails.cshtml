@@ -51,6 +51,9 @@
                         @Html.DisplayNameFor(model => model.Cocktails.ElementAt(0).PriceToSell)
                     </th>
                     <th>
+                        @Html.DisplayNameFor(model => model.Cocktails.ElementAt(0).CocktailCategory)
+                    </th>
+                    <th>
                         ACTIONS
                     </th>
                 </tr>
@@ -58,28 +61,31 @@
             <tbody>
                 @foreach (var item in Model.Cocktails)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PriceToSell)
-                        </td>
-                        <td>
-                            <form method="post">
-                                <label>Nom</label>
-                                <input asp-for="FormCocktail.NAME" />
-                                <label>Prix de vente</label>
-                                <input asp-for="FormCocktail.PRICE" />
-                                <input asp-page-handler="UpdateCocktail" asp-route-id="@item.Id" type="submit" value="Update Cocktail">
-                            </form>
-                        </td>
-                        <td>
-                            <form method="post">
-                                <input asp-page-handler="RemoveCocktail" asp-route-id="@item.Id" type="submit" value="X">
-                            </form>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PriceToSell)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CocktailCategory)
+                    </td>
+                    <td>
+                        <form method="post">
+                            <label>Nom</label>
+                            <input asp-for="FormCocktail.NAME" />
+                            <label>Prix de vente</label>
+                            <input asp-for="FormCocktail.PRICE" />
+                            <input asp-page-handler="UpdateCocktail" asp-route-id="@item.Id" type="submit" value="Update Cocktail">
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post">
+                            <input asp-page-handler="RemoveCocktail" asp-route-id="@item.Id" type="submit" value="X">
+                        </form>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

@@ -15,6 +15,8 @@ namespace BarManagement.DataAccess.EfModels
         public double PriceToSell { get; set; }
         public double Cost { get; set; }
 
+        public string CocktailCategory { get; set; }
+
         public virtual ICollection<Transactions> Transactions { get; set; }
     }
 }

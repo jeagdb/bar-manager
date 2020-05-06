@@ -28,9 +28,13 @@ namespace BarManagement.Pages
         private readonly DataAccess.Interfaces.IStocksRepository _stocksRepository;
         private readonly DataAccess.Interfaces.ITransactionsRepository _transactionsRepository;
         private readonly DataAccess.Interfaces.IDrinksRepository _drinksRepository;
+        private List<string> Categories = new List<string> { "Soft", "Alcool" };
+
         public List<Models.Stocks> Stocks { get; set; }
         public List<Models.Drinks> Drinks { get; set; }
         public List<SelectListItem> DrinksOptions { get; set; }
+        public List<SelectListItem> CategoryOptions { get; set; }
+
 
         public bool isDelete { get; set; }
         public class FormDrinkModel
@@ -41,10 +45,6 @@ namespace BarManagement.Pages
             [BindProperty]
             [Required]
             public string BRAND { get; set; }
-            [BindProperty]
-            [Required]
-
-            public string CATEGORY { get; set; }
         }
         public class FormStockModel
         {
@@ -83,6 +83,8 @@ namespace BarManagement.Pages
             Stocks = _stocksRepository.GetStocks();
             var CopyDrinks = new List<Models.Drinks>(Drinks);
             DrinksOptions = CopyDrinks.Select(drink => new SelectListItem { Value = drink.Id.ToString(), Text = drink.Name }).ToList();
+            CategoryOptions = Categories.Select(category => new SelectListItem { Value = category, Text = category }).ToList();
+
             isDelete = true;
         }
 
@@ -93,7 +95,7 @@ namespace BarManagement.Pages
             {
                 return Redirect("./Stocks");
             }
-            await _drinksRepository.Insert(new Models.Drinks() { Name = FormDrink.NAME, Brand = FormDrink.BRAND, Category = FormDrink.CATEGORY });
+            await _drinksRepository.Insert(new Models.Drinks() { Name = FormDrink.NAME, Brand = FormDrink.BRAND, Category = Request.Form["categorySelected"] });
             return Redirect("./Stocks");
         }
 

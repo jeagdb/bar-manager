@@ -79,13 +79,31 @@ namespace BarManagement.Pages
             }
             Models.Cocktails newCocktail = await _cocktailsRepository.Insert(new Models.Cocktails() { Name = FormCocktail.NAME, PriceToSell = Double.Parse(FormCocktail.PRICE) });
             int index = 0;
+            bool containAlcool = false;
             foreach (Models.CocktailsComposition composition in Compositions)
             {
                 var drinkId = Int32.Parse(Request.Form["drinkSelected_" + index ]);
                 Models.Drinks drink = Drinks.First(drink => drink.Id == drinkId);
+                if (drink.Category == "Alcool") { containAlcool = true;  }
                 await _cocktailsCompositionRepository.Insert(new Models.CocktailsComposition() { DrinkId = drink.Id, CocktailId = newCocktail.Id, Quantity = composition.Quantity });
                 index++;
             }
+            if (containAlcool && Compositions.Count > 1)
+            {
+                newCocktail.CocktailCategory = "Cocktail";
+            } else if (containAlcool)
+            {
+                newCocktail.CocktailCategory = "Alcool";
+            }
+            else if (Compositions.Count > 1)
+            {
+                newCocktail.CocktailCategory = "Cocktail sans alcool";
+            }
+            else
+            {
+                newCocktail.CocktailCategory = "Soft";
+            }
+            await _cocktailsRepository.Update(newCocktail);
             return Redirect("./Cocktails");
         }
         public void OnPostAdd()
@@ -118,9 +136,17 @@ namespace BarManagement.Pages
 
         public async Task<IActionResult> OnPostRemoveCocktail(long id)
         {
+            var listCompo = _cocktailsCompositionRepository.getCompositionByCocktailId(id);
+            listCompo.ForEach(composition => {
+                removeComposition(composition.Id);
+            });
             await _cocktailsRepository.Delete(id);
             return Redirect("./Cocktails");
         }
 
+        public async void removeComposition(long id)
+        {
+            await _cocktailsCompositionRepository.Delete(id);
+        }
     }
 }

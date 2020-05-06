@@ -14,5 +14,10 @@ namespace BarManagement.DataAccess
             : base(context, mapper)
         {
         }
+        List<Models.CocktailsComposition> ICocktailsCompositionRepository.getCompositionByCocktailId(long id)
+        {
+            var result = _context.CocktailsComposition.Where(item => item.CocktailId == id);
+            return _mapper.Map<List<Models.CocktailsComposition>>(result);
+        }
     }
 }
