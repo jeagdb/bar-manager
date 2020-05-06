@@ -20,5 +20,11 @@ namespace BarManagement.DataAccess
             var result = _context.Transactions.ToList();
             return _mapper.Map<List<Models.Transactions>>(result);
         }
+
+        public List<Models.Transactions> GetTransactionsByCocktail(int id)
+        {
+            var transactionsList = GetTransactions();
+            return transactionsList.Where(t => t.CocktailId == id).ToList();
+        }
     }
 }
