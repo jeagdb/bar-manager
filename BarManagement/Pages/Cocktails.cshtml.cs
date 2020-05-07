@@ -129,8 +129,10 @@ namespace BarManagement.Pages
             {
                 return Page();
             }
-            Models.Cocktails coktail = Cocktails.First(cocktail => cocktail.Id == id);
-            var cocktail = await _cocktailsRepository.Update(new Models.Cocktails() { Name = FormCocktail.NAME, PriceToSell = Double.Parse(FormCocktail.PRICE)});
+            Models.Cocktails cocktail = Cocktails.First(cocktail => cocktail.Id == id);
+            cocktail.Name = FormCocktail.NAME;
+            cocktail.PriceToSell = Double.Parse(FormCocktail.PRICE);
+            var updatedCocktail = await _cocktailsRepository.Update(cocktail);
             return Redirect("./Cocktails");
         }
 
