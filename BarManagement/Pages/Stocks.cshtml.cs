@@ -126,14 +126,17 @@ namespace BarManagement.Pages
             {
                 return Redirect("./Stocks");
             }
-            Models.Stocks stock = Stocks.First(stock => stock.Id == id);
+            Models.Stocks stock = Stocks.First(stock => stock.DrinkId == id);
 
             long quantity = calculateTotalQuantity(Int32.Parse(FormStock.NUMBER), Int32.Parse(FormStock.CAPACITY));
             double pricePerCl = calculatePricePerCl(Double.Parse((FormStock.PRICE).Replace('.', ',')), Int32.Parse(FormStock.CAPACITY));
             stock.Price = pricePerCl;
-            stock.Quantity = quantity;
 
+            double subQuantity = Math.Abs((Double) (quantity - stock.Quantity) / Double.Parse(FormStock.CAPACITY)); 
+            stock.Quantity = quantity;
             await _stocksRepository.Update(stock);
+            var updatedTransactions = await _transactionsRepository.Insert(new Models.Transactions()
+            { SellDate = DateTime.Now, Value = - subQuantity * Double.Parse((FormStock.PRICE)), CocktailId = null });
 
             return Redirect("./Stocks");
         }

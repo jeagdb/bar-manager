@@ -27,7 +27,7 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Transactions.ElementAt(0).Id)
+                    @Html.DisplayNameFor(model => model.Transactions.ElementAt(0).SellDate)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Transactions.ElementAt(0).Value)
@@ -42,7 +42,7 @@
                 {
                     <tr style="background-color: rgba(43, 155, 55, 0.4); border-bottom: solid; border-bottom-color: #ddd;">
                         <td>
-                            @Html.DisplayFor(modelItem => Model.Transactions[currentIndex].Id)
+                            @Html.DisplayFor(modelItem => Model.Transactions[currentIndex].SellDate)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => Model.Transactions[currentIndex].Value)
