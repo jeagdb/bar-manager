@@ -18,28 +18,35 @@
                     Nombre de verres vendu
                 </th>
                 <th>
-                    Bénéfices
+                    Bénéfice par verre (€)
                 </th>
                 <th>
-                    Rentabilités
+                    Bénéfice total (€)
+                </th>
+                <th>
+                    Rentabilité (%)
                 </th>
             </tr>
         </thead>
         <tbody>
             @for (var i = 0; i < Model.Cocktails.Count; i++)
             {
+                double[] stats = @Model.CurrentCocktailStats(i);
                 <tr>
                     <td>
                         @Model.Cocktails[i].Name
                     </td>
                     <td>
-                        nb de verres
+                        @(stats[0])
                     </td>
                     <td>
-                        bénéfices
+                        @(stats[1])
                     </td>
                     <td>
-                        rentabilité
+                        @(stats[2])
+                    </td>
+                    <td>
+                        @(stats[3])
                     </td>
                 </tr>
             }
