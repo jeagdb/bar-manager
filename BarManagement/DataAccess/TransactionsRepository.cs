@@ -21,10 +21,10 @@ namespace BarManagement.DataAccess
             return _mapper.Map<List<Models.Transactions>>(result);
         }
 
-        public List<Models.Transactions> GetTransactionsByCocktail(int id)
+        public List<Models.Transactions> GetTransactionsByCocktail(long cocktailId)
         {
             var transactionsList = GetTransactions();
-            return transactionsList.Where(t => t.CocktailId == id).ToList();
+            return transactionsList.FindAll(t => t.CocktailId == cocktailId);
         }
     }
 }
