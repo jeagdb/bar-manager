@@ -30,7 +30,10 @@
                     @Html.DisplayNameFor(model => model.Transactions.ElementAt(0).SellDate)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Transactions.ElementAt(0).Value)
+                    @Html.DisplayNameFor(model => model.Transactions.ElementAt(0).Value) €
+                </th>
+                <th>
+                    Type de transaction
                 </th>
             </tr>
         </thead>
@@ -47,16 +50,22 @@
                         <td>
                             @Html.DisplayFor(modelItem => Model.Transactions[currentIndex].Value)
                         </td>
+                        <td>
+                            Vente de @Html.DisplayFor(modelItem =>  Model.Cocktails.Find(element => element.Id == Model.Transactions[currentIndex].CocktailId).Name)
+                        </td>
                     </tr>
                 }
                 else
                 {
                     <tr style="background-color: rgba(162, 25, 25, 0.4); border-bottom: solid; border-bottom-color: #ddd;">
                         <td>
-                            @Html.DisplayFor(modelItem => Model.Transactions[currentIndex].Id)
+                            @Html.DisplayFor(modelItem => Model.Transactions[currentIndex].SellDate)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => Model.Transactions[currentIndex].Value)
+                        </td>
+                        <td>
+                            Achat ou perte
                         </td>
                     </tr>
                 }
