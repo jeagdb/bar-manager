@@ -19,13 +19,17 @@ namespace BarManagement.Pages
         }
 
         private readonly DataAccess.Interfaces.ITransactionsRepository _transactionsRepository;
+        private readonly DataAccess.Interfaces.ICocktailsRepository _cocktailsRepository;
         public List<Models.Transactions> Transactions { get; set; }
+        public List<Models.Cocktails> Cocktails { get; set; }
         public List<SelectListItem> TransactionsOptions { get; set; }
         public Double currentMoney { get; set; }
 
-        public TransactionsModel(DataAccess.Interfaces.ITransactionsRepository transactionsRepository)
+        public TransactionsModel(DataAccess.Interfaces.ITransactionsRepository transactionsRepository,
+            DataAccess.Interfaces.ICocktailsRepository cocktailsRepository)
         {
             _transactionsRepository = transactionsRepository;
+            _cocktailsRepository = cocktailsRepository;
         }
 
         [BindProperty]
@@ -34,6 +38,7 @@ namespace BarManagement.Pages
         public void OnGetAsync()
         {
             Transactions = _transactionsRepository.GetTransactions();
+            Cocktails = _cocktailsRepository.GetCocktails();
             var CopyTransactions = new List<Models.Transactions>(Transactions);
             TransactionsOptions = CopyTransactions.Select(transaction => new SelectListItem { 
                 Value = transaction.Id.ToString(), Text = transaction.Value.ToString() }).ToList();
