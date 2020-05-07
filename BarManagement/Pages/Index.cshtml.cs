@@ -91,13 +91,6 @@ namespace BarManagement.Pages
             string unitSoldName = FormUnitSold.NAME;
             int unitSoldQuantity = FormUnitSold.QUANTITY;
             Models.Cocktails cocktailSold = Cocktails.First(cocktail => cocktail.Name == unitSoldName);
-            Models.Stocks cocktailStock = Stocks.First(stock => stock.DrinkId == cocktailSold.Id);
-
-            if (unitSoldQuantity > cocktailStock.Quantity)
-            {
-                ModelState.AddModelError("Stocks", "No more available for this product");
-                return Redirect("./");
-            }
 
             await _transactionsRepository.Insert(new Models.Transactions() {
                 SellDate = DateTime.Now,
