@@ -15,10 +15,13 @@ namespace BarManagement.Pages
     public class IndexModel : PageModel
     {
         private readonly DataAccess.Interfaces.ICocktailsRepository _coktailsRepository;
+        private readonly DataAccess.Interfaces.ICocktailsCompositionRepository _cocktailsCompositionRepository;
         private readonly DataAccess.Interfaces.IStocksRepository _stocksRepository;
+        private readonly DataAccess.Interfaces.IDrinksRepository _drinksRepository;
         private readonly DataAccess.Interfaces.ITransactionsRepository _transactionsRepository;
         public List<Models.Cocktails> Cocktails { get; set; }
         public List<Models.Stocks> Stocks { get; set; }
+        public List<Models.Drinks> Drinks { get; set; }
 
         public List<Models.Cocktails> alcoolList { get; set; }
         public List<Models.Cocktails> cocktailList { get; set; }
@@ -40,13 +43,19 @@ namespace BarManagement.Pages
 
         public IndexModel(ICocktailsRepository coktailsRepository,
             IStocksRepository stocksRepository,
+            ICocktailsCompositionRepository cocktailsCompositionRepository,
+            IDrinksRepository drinksRepository,
             ITransactionsRepository transactionsRepository)
         {
             _coktailsRepository = coktailsRepository;
+            _cocktailsCompositionRepository = cocktailsCompositionRepository;
             _stocksRepository = stocksRepository;
             _transactionsRepository = transactionsRepository;
+            _drinksRepository = drinksRepository;
 
-            Cocktails = new List<Models.Cocktails>();
+            Cocktails = _coktailsRepository.GetCocktails();
+            Stocks = _stocksRepository.GetStocks();
+            Drinks = _drinksRepository.GetDrinks();
 
             alcoolList = new List<Models.Cocktails>();
             cocktailList = new List<Models.Cocktails>();
@@ -56,8 +65,6 @@ namespace BarManagement.Pages
 
         public void OnGetAsync()
         {
-            Cocktails = _coktailsRepository.GetCocktails();
-            Stocks = _stocksRepository.GetStocks();
             foreach(Models.Cocktails cocktail in Cocktails)
             {
                 switch (cocktail.CocktailCategory)
@@ -80,17 +87,32 @@ namespace BarManagement.Pages
 
         public async Task<IActionResult> OnPostUnitSold()
         {
-            Cocktails = _coktailsRepository.GetCocktails();
-            Stocks = _stocksRepository.GetStocks();
-
             if (!TryValidateModel(FormUnitSold, nameof(FormUnitSold)))
             {
                 ModelState.AddModelError("Form", "Invalid Form");
                 return Redirect("./");
             }
-            string unitSoldName = FormUnitSold.NAME;
-            int unitSoldQuantity = FormUnitSold.QUANTITY;
-            Models.Cocktails cocktailSold = Cocktails.First(cocktail => cocktail.Name == unitSoldName);
+            string cocktailSoldName = FormUnitSold.NAME;
+            int cocktailSoldQuantity = FormUnitSold.QUANTITY;
+            Models.Cocktails cocktailSold = Cocktails.FirstOrDefault(cocktail => cocktail.Name == cocktailSoldName);
+
+            List<Models.CocktailsComposition> cocktailSoldCompo = _cocktailsCompositionRepository.getCompositionByCocktailId(cocktailSold.Id);
+
+            foreach (var compoUnit in cocktailSoldCompo)
+            {
+                var drinkId = compoUnit.DrinkId;
+                var drinkQuantity = compoUnit.Quantity;
+                Models.Drinks drinkUnit = Drinks.First(drink => drink.Id == drinkId);
+                Models.Stocks drinkUnitStock = Stocks.First(stock => stock.DrinkId == drinkUnit.Id);
+
+                if (cocktailSoldQuantity * drinkQuantity > drinkUnitStock.Quantity)
+                {
+                    ModelState.AddModelError("Quantity error", "No more available");
+                    Redirect("./");
+                }
+                drinkUnitStock.Quantity -= cocktailSoldQuantity * drinkQuantity;
+                await _stocksRepository.Update(drinkUnitStock);
+            }
 
             await _transactionsRepository.Insert(new Models.Transactions() {
                 SellDate = DateTime.Now,
