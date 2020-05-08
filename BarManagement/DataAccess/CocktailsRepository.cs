@@ -20,5 +20,14 @@ namespace BarManagement.DataAccess
             var result = _context.Cocktails.ToList();
             return _mapper.Map<List<Models.Cocktails>>(result);
         }
+
+        public List<List<Models.Cocktails>> GetCocktailsSortedByCategory()
+        {
+            var allCocktails = GetCocktails();
+            var sortCocktails = from cocktail in allCocktails
+                                group cocktail by cocktail.CocktailCategory into list
+                                select list.ToList();
+            return sortCocktails.ToList();
+        }
     }
 }

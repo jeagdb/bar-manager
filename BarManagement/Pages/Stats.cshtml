@@ -7,50 +7,62 @@
 <div class="text-center">
     <h1 class="display-4">STATISTIQUES</h1>
 </div>
-<div class="text-center">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Boissons
-                </th>
-                <th>
-                    Nombre de verres vendu
-                </th>
-                <th>
-                    Bénéfice par verre (€)
-                </th>
-                <th>
-                    Bénéfice total (€)
-                </th>
-                <th>
-                    Rentabilité (%)
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (var i = 0; i < Model.Cocktails.Count; i++)
+
+@for (var i = 0; i < Model.CocktailsSortedByCategory.Count; i++)
+{
+    string category = @Model.CocktailsSortedByCategory[i][0].CocktailCategory;
+    var imgPath = Model.GetCategoryIconPath(category);
+    <div class="text-center" style="margin-top:30px">
+        <table class="table">
+            <thead>
+                <tr>
+                    <div style="display: inline-flex">
+                        <img src="@Url.Content(imgPath)"  width="50" height="50" />
+                        <h2>@(category)</h2>
+                    </div>     
+                </tr>
+                <tr>
+                    <th>
+                        Boissons
+                    </th>
+                    <th>
+                        Nombre de verres vendu
+                    </th>
+                    <th>
+                        Bénéfice par verre (€)
+                    </th>
+                    <th>
+                        Bénéfice total (€)
+                    </th>
+                    <th>
+                        Rentabilité (%)
+                    </th>
+                </tr>
+            </thead>
+            @for (var j = 0; j < Model.CocktailsSortedByCategory[i].Count; j++)
             {
                 double[] stats = @Model.CurrentCocktailStats(i);
-                <tr>
-                    <td>
-                        @Model.Cocktails[i].Name
-                    </td>
-                    <td>
-                        @(stats[0])
-                    </td>
-                    <td>
-                        @(stats[1])
-                    </td>
-                    <td>
-                        @(stats[2])
-                    </td>
-                    <td>
-                        @(stats[3])
-                    </td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td>
+                            @Model.CocktailsSortedByCategory[i][j].Name
+                        </td>
+                        <td>
+                            @(stats[0])
+                        </td>
+                        <td>
+                            @(stats[1])
+                        </td>
+                        <td>
+                            @(stats[2])
+                        </td>
+                        <td>
+                            @(stats[3])
+                        </td>
+                    </tr>
+                </tbody>
             }
-        </tbody>
-    </table>
-</div>
+        </table>
+    </div>
+}
 

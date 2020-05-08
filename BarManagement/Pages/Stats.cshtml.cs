@@ -15,6 +15,7 @@ namespace BarManagement.Pages
 
         public List<Models.Cocktails> Cocktails { get; set; }
         public List<Models.Transactions> Transactions { get; set; }
+        public List<List<Models.Cocktails>> CocktailsSortedByCategory { get; set; }
 
         public StatsModel(DataAccess.Interfaces.ICocktailsRepository cocktailsRepository, DataAccess.Interfaces.ITransactionsRepository transactionRepository)
         {
@@ -26,6 +27,7 @@ namespace BarManagement.Pages
         {
             Cocktails = _cocktailsRepository.GetCocktails();
             Transactions = _transactionsRepository.GetTransactions();
+            CocktailsSortedByCategory = _cocktailsRepository.GetCocktailsSortedByCategory();
         }
 
         public double[] CurrentCocktailStats(int id)
@@ -48,6 +50,27 @@ namespace BarManagement.Pages
             totalEarnings = earning * nbSoldGlasses;
             profitability = priceToSell / cost;
             return new double[]{ nbSoldGlasses, earning, totalEarnings, profitability };
+        }
+
+        public string GetCategoryIconPath(string categorie)
+        {
+            switch (categorie)
+            {
+                case "Alcool":
+                case "alcool":
+                    return "~/Assets/alcool.png";
+                case "Soft":
+                case "soft":
+                    return "~/Assets/soft.png";
+                case "Cocktail":
+                case "cocktail":
+                    return "~/Assets/cocktail.png";
+                case "Cocktail sans alcool":
+                case "cocktail sans alcool":
+                    return "~/Assets/cocktail-sans-alcool.png";
+                default:
+                    return "";
+            }
         }
     }
 }
