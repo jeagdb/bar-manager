@@ -43,61 +43,82 @@
                 var categoryCocktailList = Model.CocktailsSortedByCategory[i];
                 double[] stats = Model.CurrentCocktailStats(i, 0);
                 (double maxNbSold, double secondMaxNbSold) = Model.FindMaxNbSoldGlassesByCategory(i);
-                string trStyle = "";
-                string greenColor = "background-color: rgba(43, 155, 55, 0.4); border-bottom: solid; border-bottom-color: #ddd;";
+                (double minNbSold, double secondMinNbSOld) = Model.FindMinNbGlassesSoldByCategory(i);
             }
-            @if (maxNbSold == stats[0])
-                trStyle = greenColor;
-            <tbody>
-                <tr style=@(trStyle)>
-                    <td>
-                        @(categoryCocktailList[0].Name)
-                    </td>
-                    <td>
-                        @(stats[0])
-                    </td>
-                    <td>
-                        @(stats[1])
-                    </td>
-                    <td>
-                        @(stats[2])
-                    </td>
-                    <td>
-                        @(stats[3])
-                    </td>
-                </tr>
-            </tbody>
-            @if (categoryCocktailList.Count > 1)
+            @for (int j = 0; j < categoryCocktailList.Count; j++)
             {
-                @for (int j = 1; j < categoryCocktailList.Count; j++)
+                Cocktails currentCocktail = Model.CocktailsSortedByCategory[i][j];
+                stats = @Model.CurrentCocktailStats(i, j);
+                Boolean isGreen = (stats[0] == maxNbSold || stats[0] == secondMaxNbSold);
+                Boolean isRed = (stats[0] == minNbSold || stats[0] == secondMinNbSOld);
+                if (isGreen)
                 {
-                    Cocktails currentCocktail = Model.CocktailsSortedByCategory[i][j];
-                    stats = @Model.CurrentCocktailStats(i, j);
-                    if (stats[i] == maxNbSold || stats[i] == secondMaxNbSold)
-                        trStyle = greenColor;
-                    else
-                        trStyle = "";
                     <tbody>
-                       <tr style=@(trStyle)>
-                          <td>
-                            @(currentCocktail.Name)
-                          </td>
-                          <td>
-                            @(stats[0])
-                          </td>
-                          <td>
-                            @(stats[1])
-                          </td>
-                          <td>
-                            @(stats[2])
-                          </td>
-                          <td>
-                            @(stats[3])
-                          </td>
-                       </tr>
+                        <tr style="background-color: rgba(43, 155, 55, 0.4); border-bottom: solid; border-bottom-color: #ddd;">
+                            <td>
+                                @(currentCocktail.Name)
+                            </td>
+                            <td>
+                                @(stats[0])
+                            </td>
+                            <td>
+                                @(stats[1])
+                            </td>
+                            <td>
+                                @(stats[2])
+                            </td>
+                            <td>
+                                @(stats[3])
+                            </td>
+                        </tr>
+                    </tbody>
+                }
+                else if (isRed)
+                {
+                    <tbody>
+                        <tr style="background-color: rgba(162, 25, 25, 0.4); border-bottom: solid; border-bottom-color: #ddd;">
+                            <td>
+                                @(currentCocktail.Name)
+                            </td>
+                            <td>
+                                @(stats[0])
+                            </td>
+                            <td>
+                                @(stats[1])
+                            </td>
+                            <td>
+                                @(stats[2])
+                            </td>
+                            <td>
+                                @(stats[3])
+                            </td>
+                        </tr>
+                    </tbody>
+                }
+                else
+                {
+                    <tbody>
+                        <tr>
+                            <td>
+                                @(currentCocktail.Name)
+                            </td>
+                            <td>
+                                @(stats[0])
+                            </td>
+                            <td>
+                                @(stats[1])
+                            </td>
+                            <td>
+                                @(stats[2])
+                            </td>
+                            <td>
+                                @(stats[3])
+                            </td>
+                        </tr>
                     </tbody>
                 }
             }
+
         </table>
     </div>
 }

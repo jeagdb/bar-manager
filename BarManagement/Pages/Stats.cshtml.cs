@@ -92,42 +92,42 @@ namespace BarManagement.Pages
 
         public (double, double) FindMaxNbSoldGlassesByCategory(int indexI)
         {
-            List<Cocktails> cocktails = CocktailsSortedByCategory[indexI];
             List<double> nbSoldGlassesList = NbSoldGlassesSortedByCategory[indexI];
 
-            if (nbSoldGlassesList.Count == 1)
+            double maxNbSold = -1;
+            double secondNbSold = -1;
+            for (int i = 0; i < nbSoldGlassesList.Count; i++)
             {
-                if (nbSoldGlassesList[0] == 0)
-                    return (-1, -1);
-                return (nbSoldGlassesList[0], -1);
-            }
-
-            if (nbSoldGlassesList.Count == 2)
-            {
-                if (nbSoldGlassesList[1] != 0)
-                    return (nbSoldGlassesList[0], nbSoldGlassesList[1]);
-                return (nbSoldGlassesList[0], -1);
-            }
-
-            double maxNbSold = nbSoldGlassesList[0];
-            double secondNbSold = nbSoldGlassesList[1];
-            for (int i = 1; i < nbSoldGlassesList.Count; i++)
-            {
-                if (nbSoldGlassesList[i] > maxNbSold)
+                if (nbSoldGlassesList[i] != 0 && nbSoldGlassesList[i] > maxNbSold)
                 {
                     secondNbSold = maxNbSold;
                     maxNbSold = nbSoldGlassesList[i];
                 }
-                else if (nbSoldGlassesList[i] > secondNbSold)
+                else if (nbSoldGlassesList[i] != 0 &&  nbSoldGlassesList[i] > secondNbSold)
                     secondNbSold = nbSoldGlassesList[i];
             }
 
             return (maxNbSold, secondNbSold);
         }
 
-        public void FindSmallestNbGlassesSoldByCategory(int indexI)
+        public (double, double) FindMinNbGlassesSoldByCategory(int indexI)
         {
+            List<double> nbSoldGlassesList = NbSoldGlassesSortedByCategory[indexI];
 
+            double minNbSold = nbSoldGlassesList[0];
+            double secondNbSold = 0;
+            for (int i = 0; i < nbSoldGlassesList.Count; i++)
+            {
+                if (nbSoldGlassesList[i] < minNbSold)
+                {
+                    secondNbSold = minNbSold;
+                    minNbSold = nbSoldGlassesList[i];
+                }
+                else if (nbSoldGlassesList[i] != 0 && nbSoldGlassesList[i] < secondNbSold)
+                    secondNbSold = nbSoldGlassesList[i];
+            }
+
+            return (minNbSold, secondNbSold);
         }
     }
 }
