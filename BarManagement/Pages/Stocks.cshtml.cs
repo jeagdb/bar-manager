@@ -126,7 +126,7 @@ namespace BarManagement.Pages
             {
                 return Redirect("./Stocks");
             }
-            Models.Stocks stock = Stocks.First(stock => stock.DrinkId == id);
+            Models.Stocks stock = Stocks.First(stock => stock.Id == id);
 
             long quantity = calculateTotalQuantity(Int32.Parse(FormStock.NUMBER), Int32.Parse(FormStock.CAPACITY));
             double pricePerCl = calculatePricePerCl(Double.Parse((FormStock.PRICE).Replace('.', ',')), Int32.Parse(FormStock.CAPACITY));
