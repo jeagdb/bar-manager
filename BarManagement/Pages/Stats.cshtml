@@ -8,7 +8,7 @@
     <h1 class="display-4 mb-5">STATISTIQUES</h1>
 </div>
 
-@for (var i = 0; i < Model.CocktailsSortedByCategory.Count; i++)
+@for (int i = 0; i < Model.CocktailsSortedByCategory.Count; i++)
 {
     string category = @Model.CocktailsSortedByCategory[i][0].CocktailCategory;
     var imgPath = Model.GetCategoryIconPath(category);
@@ -17,9 +17,9 @@
             <thead>
                 <tr>
                     <div style="display: inline-flex">
-                        <img src="@Url.Content(imgPath)"  width="50" height="50" />
+                        <img src="@Url.Content(imgPath)" width="50" height="50" />
                         <h2>@(category)</h2>
-                    </div>     
+                    </div>
                 </tr>
                 <tr>
                     <th>
@@ -39,28 +39,64 @@
                     </th>
                 </tr>
             </thead>
-            @for (var j = 0; j < Model.CocktailsSortedByCategory[i].Count; j++)
+            @{
+                var categoryCocktailList = Model.CocktailsSortedByCategory[i];
+                double[] stats = Model.CurrentCocktailStats(i, 0);
+                (double maxNbSold, double secondMaxNbSold) = Model.FindMaxNbSoldGlassesByCategory(i);
+                string trStyle = "";
+                string greenColor = "background-color: rgba(43, 155, 55, 0.4); border-bottom: solid; border-bottom-color: #ddd;";
+            }
+            @if (maxNbSold == stats[0])
+                trStyle = greenColor;
+            <tbody>
+                <tr style=@(trStyle)>
+                    <td>
+                        @(categoryCocktailList[0].Name)
+                    </td>
+                    <td>
+                        @(stats[0])
+                    </td>
+                    <td>
+                        @(stats[1])
+                    </td>
+                    <td>
+                        @(stats[2])
+                    </td>
+                    <td>
+                        @(stats[3])
+                    </td>
+                </tr>
+            </tbody>
+            @if (categoryCocktailList.Count > 1)
             {
-                double[] stats = @Model.CurrentCocktailStats(i);
-                <tbody>
-                    <tr>
-                        <td>
-                            @Model.CocktailsSortedByCategory[i][j].Name
-                        </td>
-                        <td>
+                @for (int j = 1; j < categoryCocktailList.Count; j++)
+                {
+                    Cocktails currentCocktail = Model.CocktailsSortedByCategory[i][j];
+                    stats = @Model.CurrentCocktailStats(i, j);
+                    if (stats[i] == maxNbSold || stats[i] == secondMaxNbSold)
+                        trStyle = greenColor;
+                    else
+                        trStyle = "";
+                    <tbody>
+                       <tr style=@(trStyle)>
+                          <td>
+                            @(currentCocktail.Name)
+                          </td>
+                          <td>
                             @(stats[0])
-                        </td>
-                        <td>
+                          </td>
+                          <td>
                             @(stats[1])
-                        </td>
-                        <td>
+                          </td>
+                          <td>
                             @(stats[2])
-                        </td>
-                        <td>
+                          </td>
+                          <td>
                             @(stats[3])
-                        </td>
-                    </tr>
-                </tbody>
+                          </td>
+                       </tr>
+                    </tbody>
+                }
             }
         </table>
     </div>
