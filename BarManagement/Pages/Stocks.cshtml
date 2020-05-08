@@ -34,7 +34,7 @@
         {
     <div class="card col-lg">
         <div class="card-body">
-            <h1 class="card-title">Liste des boissons</h1>
+            <h1 class="card-title">Boissons actuelles</h1>
             <table class="table">
                 <thead>
                     <tr>
@@ -80,9 +80,9 @@
         }
     </div>
 </div>
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div class="card col-lg">
+        <div class="card">
             <div class="card-body">
                 <h1 class="card-title">Nouveau stock</h1>
                 <form method="post">
@@ -107,7 +107,7 @@
         </div>
         @if (Model.Stocks != null && Model.Stocks.Count > 0)
         {
-            <div class="card col-lg">
+            <div class="card col">
                 <div class="card-body">
                     <h1 class="card-title">Stock actuel</h1>
                     <table class="table">
@@ -159,7 +159,7 @@
                                                 <label>Nombre d'unités</label>
                                                 <input class="form-control" asp-for="FormStock.NUMBER" />
                                             </div>
-                                            <button class="btn btn-info" -asp-page-handler="UpdateStock" asp-route-id="@item.Id" type="submit">Modifier</button>
+                                            <button class="btn btn-warning" -asp-page-handler="UpdateStock" asp-route-id="@item.Id" type="submit">Modifier</button>
                                         </form>
                                     </td>
                                     <td>
