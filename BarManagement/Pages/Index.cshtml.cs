@@ -54,7 +54,7 @@ namespace BarManagement.Pages
             softList = new List<Models.Cocktails>();
         }
 
-        public void OnGet()
+        public void OnGetAsync()
         {
             Cocktails = _coktailsRepository.GetCocktails();
             Stocks = _stocksRepository.GetStocks();
@@ -62,16 +62,16 @@ namespace BarManagement.Pages
             {
                 switch (cocktail.CocktailCategory)
                 {
-                    case "alcool":
+                    case "Alcool":
                         alcoolList.Add(cocktail);
                         break;
-                    case "cocktail":
+                    case "Cocktail":
                         cocktailList.Add(cocktail);
                         break;
-                    case "cocktail sans alcool":
+                    case "Cocktail sans alcool":
                         virginCocktailList.Add(cocktail);
                         break;
-                    case "soft":
+                    case "Soft":
                         softList.Add(cocktail);
                         break;
                 }
