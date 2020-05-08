@@ -76,6 +76,7 @@ namespace BarManagement.Pages
         }
         public async Task<IActionResult> OnPostCocktails()
         {
+            Cocktails = _cocktailsRepository.GetCocktails();
             ModelState.MarkAllFieldsAsSkipped();
             Drinks = _drinksRepository.GetDrinks();
             Stocks = _stocksRepository.GetStocks();
