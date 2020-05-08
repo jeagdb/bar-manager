@@ -14,16 +14,14 @@
                 <h1 class="card-title">Nouvelle boisson</h1>
                 <form method="post">
                     <div class="form-group">
-                        <label>Nom</label>
-                        <input class="form-control" asp-for="FormDrink.NAME" />
-                    </div>
-                    <div class="form-group">
-                        <label>Marque</label>
-                        <input class="form-control" asp-for="FormDrink.BRAND" />
-                    </div>
-                    <div class="form-group">
                         <label>Catégorie</label>
                         <select class="form-control" name="categorySelected" asp-items="Model.CategoryOptions"></select>
+                    </div>
+                    <div class="form-group">
+                        <input placeholder="Nom" class="form-control" asp-for="FormDrink.NAME" />
+                    </div>
+                    <div class="form-group">
+                        <input placeholder="Marque" class="form-control" asp-for="FormDrink.BRAND" />
                     </div>
                     <button asp-page-handler="Drinks" type="submit" class="btn btn-primary">Ajout d'une boisson</button>"
                 </form>
@@ -87,19 +85,17 @@
                 <h1 class="card-title">Nouveau stock</h1>
                 <form method="post">
                     <div class="form-group">
+                        <label>Catégorie</label>
                         <select class="form-control" name="drinkSelected" asp-items="Model.DrinksOptions"></select>
                     </div>
                     <div class="form-group">
-                        <label>Contenance par unité (cl)</label>
-                        <input class="form-control" asp-for="FormStock.CAPACITY" />
+                        <input placeholder="Contenance par unité (cl)" class="form-control" asp-for="FormStock.CAPACITY" />
                     </div>
                     <div class="form-group">
-                        <label>Prix d'une unité</label>
-                        <input class="form-control" asp-for="FormStock.PRICE" />
+                        <input placeholder="Prix d'une unité" class="form-control" asp-for="FormStock.PRICE" />
                     </div>
                     <div class="form-group">
-                        <label>Nombre d'unités</label>
-                        <input class="form-control" asp-for="FormStock.NUMBER" />
+                        <input placeholder="Nombre d'unités" class="form-control" asp-for="FormStock.NUMBER" />
                     </div>
                     <button class="btn btn-primary" asp-page-handler="Stocks" type="submit">Créer un nouveau stock</button>
                 </form>
@@ -148,16 +144,13 @@
                                     <td>
                                         <form method="post">
                                             <div class="form-group">
-                                                <label>Contenance par unité (cl)</label>
-                                                <input class="form-control" asp-for="FormStock.CAPACITY" />
+                                                <input placeholder="Contenance par unité (cl)" class="form-control" asp-for="FormStock.CAPACITY" />
                                             </div>
                                             <div class="form-group">
-                                                <label>Prix d'une unité</label>
-                                                <input class="form-control" asp-for="FormStock.PRICE" />
+                                                <input placeholder="Prix d'une unité" class="form-control" asp-for="FormStock.PRICE" />
                                             </div>
                                             <div class="form-group">
-                                                <label>Nombre d'unités</label>
-                                                <input class="form-control" asp-for="FormStock.NUMBER" />
+                                                <input placeholder="Nombre d'unités" class="form-control" asp-for="FormStock.NUMBER" />
                                             </div>
                                             <button class="btn btn-warning" -asp-page-handler="UpdateStock" asp-route-id="@item.Id" type="submit">Modifier</button>
                                         </form>

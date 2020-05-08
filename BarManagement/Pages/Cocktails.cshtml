@@ -15,12 +15,10 @@
             <h1 class="card-title">Nouvelle recette</h1>
             <form method="post">
                 <div class="form-group">
-                    <label>Nom</label>
-                    <input class="form-control" asp-for="FormCocktail.NAME" />
+                    <input placeholder="Nom" class="form-control" asp-for="FormCocktail.NAME" />
                 </div>
                 <div class="form-group">
-                    <label>Prix de vente</label>
-                    <input class="form-control" asp-for="FormCocktail.PRICE" />
+                    <input placeholder="Prix de vente" class="form-control" asp-for="FormCocktail.PRICE" />
                 </div>
                 @if (Model.Compositions != null)
                 {
@@ -81,14 +79,12 @@
                                 @Html.DisplayFor(modelItem => item.CocktailCategory)
                             </td>
                             <td>
-                                <form method="post">
+                                <form class="form-inline" method="post">
                                     <div class="form-group">
-                                        <label>Nom</label>
-                                        <input class="form-control" asp-for="FormCocktail.NAME" />
+                                        <input placeholder="Nom" class="form-control" asp-for="FormCocktail.NAME" />
                                     </div>
                                     <div class="form-group">
-                                        <label>Prix de vente</label>
-                                        <input class="form-control" asp-for="FormCocktail.PRICE" />
+                                        <input placeholder="Prix de vente" class="form-control" asp-for="FormCocktail.PRICE" />
                                     </div>
                                     <button class="btn btn-warning" asp-page-handler="UpdateCocktail" asp-route-id="@item.Id" type="submit">Modifier</button>
                                 </form>
