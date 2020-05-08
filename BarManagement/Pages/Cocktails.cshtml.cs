@@ -118,6 +118,7 @@ namespace BarManagement.Pages
         }
         public void OnPostAdd()
         {
+            Cocktails = _cocktailsRepository.GetCocktails();
             Drinks = _drinksRepository.GetDrinks();
             var CopyDrinks = new List<Models.Drinks>(Drinks);
             DrinksOptions = CopyDrinks.Select(drink => new SelectListItem { Value = drink.Id.ToString(), Text = drink.Name }).ToList();
@@ -125,6 +126,7 @@ namespace BarManagement.Pages
         }
         public void OnPostRemove(int index)
         {
+            Cocktails = _cocktailsRepository.GetCocktails();
             Drinks = _drinksRepository.GetDrinks();
             var CopyDrinks = new List<Models.Drinks>(Drinks);
             DrinksOptions = CopyDrinks.Select(drink => new SelectListItem { Value = drink.Id.ToString(), Text = drink.Name }).ToList();
