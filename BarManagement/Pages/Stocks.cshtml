@@ -5,140 +5,167 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">GESTION DU STOCK</h1>
+    <h1 class="display-4 mb-5">GESTION DU STOCK</h1>
 </div>
-<div class="text-center">
-    <h1>AJOUT D'UNE BOISSON</h1>
-    <form method="post">
-        <label>Nom</label>
-        <input asp-for="FormDrink.NAME" />
-        <label>Marque</label>
-        <input asp-for="FormDrink.BRAND" />
-        <label>Catégorie</label>
-        <select name="categorySelected" asp-items="Model.CategoryOptions"></select>
-        <input asp-page-handler="Drinks" type="submit" value="Create drink">
-    </form>
-</div>
-<div class="text-center">
-    <h1>AJOUT D'UN STOCK DE BOISSON</h1>
-    <form method="post">
-        <select name="drinkSelected" asp-items="Model.DrinksOptions"></select>
-        <label>Contenance par unité (cl)</label>
-        <input asp-for="FormStock.CAPACITY" />
-        <label>Prix d'une unité</label>
-        <input asp-for="FormStock.PRICE" />
-        <label>Nombre d'unités</label>
-        <input asp-for="FormStock.NUMBER" />
-        <input asp-page-handler="Stocks" type="submit" value="Create Stock">
-    </form>
-</div>
-@if (Model.Stocks != null && Model.Stocks.Count > 0)
-{
-    <div class="text-center">
-        <h2>STOCK</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Nom
-                    </th>
-                    <th>
-                        Marque
-                    </th>
-                    <th>
-                        Quantité (cl)
-                    </th>
-                    <th>
-                        Prix (€/cl)
-                    </th>
-                    <th>
-                        ACTIONS
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Stocks)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Drink.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Drink.Brand)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Quantity)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Price)
-                        </td>
-                        <td>
-                            <form method="post">
-                                <label>Contenance par unité (cl)</label>
-                                <input asp-for="FormStock.CAPACITY" />
-                                <label>Prix d'une unité</label>
-                                <input asp-for="FormStock.PRICE" />
-                                <label>Nombre d'unités</label>
-                                <input asp-for="FormStock.NUMBER" />
-                                <input asp-page-handler="UpdateStock" asp-route-id="@item.Id" type="submit" value="Update Stock">
-                            </form>
-                        </td>
-                        <td>
-                            <form method="post">
-                                <input asp-page-handler="RemoveStock" asp-route-id="@item.Id" type="submit" value="X">
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
+<div class="container mb-3">
+    <div class="row">
+        <div class="card col-lg">
+            <div class="card-body">
+                <h1 class="card-title">Nouvelle boisson</h1>
+                <form method="post">
+                    <div class="form-group">
+                        <label>Catégorie</label>
+                        <select class="form-control" name="categorySelected" asp-items="Model.CategoryOptions"></select>
+                    </div>
+                    <div class="form-group">
+                        <input placeholder="Nom" class="form-control" asp-for="FormDrink.NAME" />
+                    </div>
+                    <div class="form-group">
+                        <input placeholder="Marque" class="form-control" asp-for="FormDrink.BRAND" />
+                    </div>
+                    <button asp-page-handler="Drinks" type="submit" class="btn btn-primary">Ajout d'une boisson</button>"
+                </form>
+            </div>
+        </div>
 
-@if (Model.Drinks != null && Model.Drinks.Count > 0)
-{
-    <div class="text-center">
-        <h2>LISTE DES BOISSONS</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Drinks.ElementAt(0).Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Drinks.ElementAt(0).Brand)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Drinks.ElementAt(0).Category)
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Drinks)
-                {
+        @if (Model.Drinks != null && Model.Drinks.Count > 0)
+        {
+    <div class="card col-lg">
+        <div class="card-body">
+            <h1 class="card-title">Boissons actuelles</h1>
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Brand)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Category)
-                        </td>
-                        <td>
-                            <form method="post">
-                                <input asp-page-handler="RemoveDrink" asp-route-id="@item.Id" type="submit" value="X">
-                            </form>
-                            @if (!Model.isDelete)
+                        <th>
+                            Nom
+                        </th>
+                        <th>
+                            Marque
+                        </th>
+                        <th>
+                            Type de boisson
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Drinks)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Brand)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category)
+                            </td>
+                            <td>
+                                <form method="post">
+                                    <button asp-page-handler="RemoveDrink" asp-route-id="@item.Id" type="submit" class="btn btn-danger">X</button>
+                                </form>
+                                @if (!Model.isDelete)
+                                {
+                                    <p>Attention, suppression impossible : il existe un stock de cette boisson.</p>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+        }
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title">Nouveau stock</h1>
+                <form method="post">
+                    <div class="form-group">
+                        <label>Catégorie</label>
+                        <select class="form-control" name="drinkSelected" asp-items="Model.DrinksOptions"></select>
+                    </div>
+                    <div class="form-group">
+                        <input placeholder="Contenance par unité (cl)" class="form-control" asp-for="FormStock.CAPACITY" />
+                    </div>
+                    <div class="form-group">
+                        <input placeholder="Prix d'une unité" class="form-control" asp-for="FormStock.PRICE" />
+                    </div>
+                    <div class="form-group">
+                        <input placeholder="Nombre d'unités" class="form-control" asp-for="FormStock.NUMBER" />
+                    </div>
+                    <button class="btn btn-primary" asp-page-handler="Stocks" type="submit">Créer un nouveau stock</button>
+                </form>
+            </div>
+        </div>
+        @if (Model.Stocks != null && Model.Stocks.Count > 0)
+        {
+            <div class="card col">
+                <div class="card-body">
+                    <h1 class="card-title">Stock actuel</h1>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Nom
+                                </th>
+                                <th>
+                                    Marque
+                                </th>
+                                <th>
+                                    Quantité (cl)
+                                </th>
+                                <th>
+                                    Prix (€/cl)
+                                </th>
+                                <th>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Stocks)
                             {
-                                <p>Attention, suppression impossible : il existe un stock de cette boisson.</p>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Drink.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Drink.Brand)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Quantity)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Price)
+                                    </td>
+                                    <td>
+                                        <form method="post">
+                                            <div class="form-group">
+                                                <input placeholder="Contenance par unité (cl)" class="form-control" asp-for="FormStock.CAPACITY" />
+                                            </div>
+                                            <div class="form-group">
+                                                <input placeholder="Prix d'une unité" class="form-control" asp-for="FormStock.PRICE" />
+                                            </div>
+                                            <div class="form-group">
+                                                <input placeholder="Nombre d'unités" class="form-control" asp-for="FormStock.NUMBER" />
+                                            </div>
+                                            <button class="btn btn-warning" -asp-page-handler="UpdateStock" asp-route-id="@item.Id" type="submit">Modifier</button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form method="post">
+                                            <button asp-page-handler="RemoveStock" asp-route-id="@item.Id" type="submit" class="btn btn-danger">X</button>
+                                        </form>
+                                    </td>
+                                </tr>
                             }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
     </div>
-}
-
+</div>
