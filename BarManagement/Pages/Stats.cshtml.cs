@@ -17,6 +17,7 @@ namespace BarManagement.Pages
         public List<Models.Transactions> Transactions { get; set; }
         public List<List<Models.Cocktails>> CocktailsSortedByCategory { get; set; }
         public List<List<double>> NbSoldGlassesSortedByCategory { get; set; }
+        public double bigTotalEarnings;
 
         public StatsModel(DataAccess.Interfaces.ICocktailsRepository cocktailsRepository, DataAccess.Interfaces.ITransactionsRepository transactionRepository)
         {
@@ -53,6 +54,7 @@ namespace BarManagement.Pages
             Transactions = _transactionsRepository.GetTransactions();
             CocktailsSortedByCategory = _cocktailsRepository.GetCocktailsSortedByCategory();
             NbSoldGlassesSortedByCategory = CalculateNbGlassesForEachCocktail();
+            bigTotalEarnings = 0;
         }
 
         public double[] CurrentCocktailStats(int indexI, int indexJ)
@@ -66,6 +68,9 @@ namespace BarManagement.Pages
             double earning = priceToSell - cost;
             double totalEarnings = earning * nbSoldGlasses;
             double profitability = priceToSell / cost;
+
+            bigTotalEarnings += totalEarnings;
+
             return new double[]{ nbSoldGlasses, earning, totalEarnings, profitability };
         }
 
@@ -128,6 +133,11 @@ namespace BarManagement.Pages
             }
 
             return (minNbSold, secondNbSold);
+        }
+
+        public double GetBigTotalEarnings()
+        {
+            return bigTotalEarnings;
         }
     }
 }
