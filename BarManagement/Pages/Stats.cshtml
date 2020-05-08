@@ -12,7 +12,7 @@
 {
     string category = @Model.CocktailsSortedByCategory[i][0].CocktailCategory;
     var imgPath = Model.GetCategoryIconPath(category);
-    <div class="text-center" style="margin-top:30px">
+    <div class="text-center" style="margin-top:60px">
         <table class="table">
             <thead>
                 <tr>
@@ -41,14 +41,13 @@
             </thead>
             @{
                 var categoryCocktailList = Model.CocktailsSortedByCategory[i];
-                double[] stats = Model.CurrentCocktailStats(i, 0);
                 (double maxNbSold, double secondMaxNbSold) = Model.FindMaxNbSoldGlassesByCategory(i);
                 (double minNbSold, double secondMinNbSOld) = Model.FindMinNbGlassesSoldByCategory(i);
             }
             @for (int j = 0; j < categoryCocktailList.Count; j++)
             {
                 Cocktails currentCocktail = Model.CocktailsSortedByCategory[i][j];
-                stats = @Model.CurrentCocktailStats(i, j);
+                double[] stats = @Model.CurrentCocktailStats(i, j);
                 Boolean isGreen = (stats[0] == maxNbSold || stats[0] == secondMaxNbSold);
                 Boolean isRed = (stats[0] == minNbSold || stats[0] == secondMinNbSOld);
                 if (isGreen)
@@ -123,3 +122,17 @@
     </div>
 }
 
+<div class="text-center mb-5" style="margin-top:100px">
+    <h1 class="display-4 mb-2">TOTAL DES BENEFICES</h1>
+    <div class="mb-2" style="display: flex">
+        <img style="margin: auto; max-width: 50px" src="https://images.vexels.com/media/users/3/143188/isolated/preview/5f44f3160a09b51b4fa4634ecdff62dd-money-icon-by-vexels.png" alt="money" />
+        @if (Model.bigTotalEarnings < 0)
+        {
+            <h1 style="color: red; font-size: 100px; margin: auto">@Model.GetBigTotalEarnings() €</h1>
+        }
+        @if (Model.bigTotalEarnings >= 0)
+        {
+            <h1 style="color: green; font-size: 100px; margin: auto">@Model.GetBigTotalEarnings() €</h1>
+        }
+    </div>
+</div>
