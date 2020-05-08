@@ -87,6 +87,9 @@ namespace BarManagement.Pages
 
         public async Task<IActionResult> OnPostUnitSold()
         {
+            Cocktails = _coktailsRepository.GetCocktails();
+            Stocks = _stocksRepository.GetStocks();
+            Drinks = _drinksRepository.GetDrinks();
             if (!TryValidateModel(FormUnitSold, nameof(FormUnitSold)))
             {
                 ModelState.AddModelError("Form", "Invalid Form");
@@ -102,8 +105,8 @@ namespace BarManagement.Pages
             {
                 var drinkId = compoUnit.DrinkId;
                 var drinkQuantity = compoUnit.Quantity;
-                Models.Drinks drinkUnit = Drinks.First(drink => drink.Id == drinkId);
-                Models.Stocks drinkUnitStock = Stocks.First(stock => stock.DrinkId == drinkUnit.Id);
+                Models.Drinks drinkUnit = Drinks.FirstOrDefault(drink => drink.Id == drinkId);
+                Models.Stocks drinkUnitStock = Stocks.FirstOrDefault(stock => stock.DrinkId == drinkUnit.Id);
 
                 if (cocktailSoldQuantity * drinkQuantity > drinkUnitStock.Quantity)
                 {
