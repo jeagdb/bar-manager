@@ -8,29 +8,30 @@
     <h1 class="display-4 mb-5">BAR</h1>
 </div>
 <div>
+    @if (TempData["error"] != null)
+    {
+        <p style="color: maroon; font-style: italic; margin-left: 30px; font-size: 20px">@TempData["error"]</p>
+    }
+</div>
+<div>
     <form method="post">
-
     </form>
     <ul style="list-style-type:none;">
         <li>
             <div class="row">
-                <img src="~/Assets/alcool.png" width="64" height="64"/>
+                <img src="~/Assets/alcool.png" width="64" height="64" />
                 <h1 class="mb-5">ALCOOL</h1>
             </div>
-                @foreach (var alcool in Model.alcoolList)
-                {
-                    <form method="post" class="form-inline ml-4">
-                        <div class="form-group">
-                            <input class="form-control" asp-for="FormUnitSold.NAME" value=@alcool.Name readonly />
-                            <input placeholder="Quantité" class="form-control" size="5" asp-for="FormUnitSold.QUANTITY">
-                            <button asp-page-handler="UnitSold" type="submit" class="btn btn-success">Vendu</button>
-                        </div>
-                    </form>
-                    @if (!ViewData.ModelState.IsValid)
-                    {
-                        <div>ERROR</div>
-                    }
-                }
+            @foreach (var alcool in Model.alcoolList)
+            {
+                <form method="post" class="form-inline ml-4">
+                    <div class="form-group">
+                        <input class="form-control" asp-for="FormUnitSold.NAME" value=@alcool.Name readonly />
+                        <input placeholder="Quantité" class="form-control" size="5" asp-for="FormUnitSold.QUANTITY">
+                        <button asp-page-handler="UnitSold" type="submit" class="btn btn-success">Vendu</button>
+                    </div>
+                </form>
+            }
         </li>
         <hr />
         <li>
@@ -38,16 +39,16 @@
                 <img src="~/Assets/cocktail.png" width="64" height="64" />
                 <h1 class="mb-5">COCKTAIL</h1>
             </div>
-                @foreach (var cocktail in Model.cocktailList)
-                {
-                        <form method="post" class="form-inline ml-4">
-                            <div class="form-group">
-                                <input class="form-control" asp-for="FormUnitSold.NAME" value=@cocktail.Name readonly />
-                                <input placeholder="Quantité" class="form-control" size="5" asp-for="FormUnitSold.QUANTITY">
-                                <button asp-page-handler="UnitSold" type="submit" class="btn btn-success">Vendu</button>
-                            </div>
-                        </form>
-                }
+            @foreach (var cocktail in Model.cocktailList)
+            {
+                <form method="post" class="form-inline ml-4">
+                    <div class="form-group">
+                        <input class="form-control" asp-for="FormUnitSold.NAME" value=@cocktail.Name readonly />
+                        <input placeholder="Quantité" class="form-control" size="5" asp-for="FormUnitSold.QUANTITY">
+                        <button asp-page-handler="UnitSold" type="submit" class="btn btn-success">Vendu</button>
+                    </div>
+                </form>
+            }
         </li>
         <hr />
         <li>
@@ -55,16 +56,16 @@
                 <img src="~/Assets/cocktail-sans-alcool.png" width="64" height="64" />
                 <h1 class="mb-5">COCKTAIL SANS ALCOOL</h1>
             </div>
-                @foreach (var virginCocktail in Model.virginCocktailList)
-                {
-                        <form method="post" class="form-inline ml-4">
-                            <div class="form-group">
-                                <input class="form-control" asp-for="FormUnitSold.NAME" value=@virginCocktail.Name readonly />
-                                <input class="form-control" placeholder="Quantité" size="5" asp-for="FormUnitSold.QUANTITY">
-                                <button asp-page-handler="UnitSold" type="submit" class="btn btn-success">Vendu</button>
-                            </div>
-                        </form>
-                }
+            @foreach (var virginCocktail in Model.virginCocktailList)
+            {
+                <form method="post" class="form-inline ml-4">
+                    <div class="form-group">
+                        <input class="form-control" asp-for="FormUnitSold.NAME" value=@virginCocktail.Name readonly />
+                        <input class="form-control" placeholder="Quantité" size="5" asp-for="FormUnitSold.QUANTITY">
+                        <button asp-page-handler="UnitSold" type="submit" class="btn btn-success">Vendu</button>
+                    </div>
+                </form>
+            }
         </li>
         <hr />
         <li>
@@ -81,14 +82,8 @@
                         <button asp-page-handler="UnitSold" type="submit" class="btn btn-success">Vendu</button>
                     </div>
                 </form>
-                <div>
-                    @if (TempData["error"] != null)
-                    {
-                        <p style="color: darkred; font-style: italic; margin-left: 30px">@TempData["error"]</p>
-                    }
-                </div>
             }
         </li>
     </ul>
-    
+
 </div>

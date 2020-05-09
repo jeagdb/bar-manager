@@ -96,7 +96,7 @@ namespace BarManagement.Pages
             Drinks = _drinksRepository.GetDrinks();
             if (!TryValidateModel(FormUnitSold, nameof(FormUnitSold)))
             {
-                TempData["error"] = "Invalid Form";
+                TempData["error"] = "Formulaire invalide";
                 return Redirect("./Index");
             }
             string cocktailSoldName = FormUnitSold.NAME;
@@ -115,7 +115,7 @@ namespace BarManagement.Pages
 
                 if ((drinkUnitStock != null) && cocktailSoldQuantity * drinkQuantity > drinkUnitStock.Quantity)
                 {
-                    TempData["error"] = "No More Available";
+                    TempData["error"] = "Il n'y a plus assez de " + cocktailSold.Name + " :(";
                     return Redirect("./Index");
                 }
                 if (drinkUnitStock is null) 
