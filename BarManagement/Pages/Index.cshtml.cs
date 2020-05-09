@@ -114,6 +114,7 @@ namespace BarManagement.Pages
 
                 if (cocktailSoldQuantity * drinkQuantity > drinkUnitStock.Quantity)
                 {
+                    TempData["error"] = "No More Available";
                     ModelState.AddModelError("Quantity error", "No more available");
                     Redirect("./Index");
                 }

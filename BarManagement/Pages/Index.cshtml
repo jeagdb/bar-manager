@@ -72,16 +72,22 @@
                 <img src="~/Assets/soft.png" width="64" height="64" />
                 <h1 class="mb-5">SOFT</h1>
             </div>
-                @foreach (var soft in Model.softList)
-                {
-                        <form method="post" class="form-inline ml-4">
-                            <div class="form-group">
-                                <input class="form-control" asp-for="FormUnitSold.NAME" value=@soft.Name readonly />
-                                <input placeholder="Quantité" class="form-control" size="5" asp-for="FormUnitSold.QUANTITY">
-                                <button asp-page-handler="UnitSold" type="submit" class="btn btn-success">Vendu</button>
-                            </div>
-                        </form>
-                }
+            @foreach (var soft in Model.softList)
+            {
+                <form method="post" class="form-inline ml-4">
+                    <div class="form-group">
+                        <input class="form-control" asp-for="FormUnitSold.NAME" value=@soft.Name readonly />
+                        <input placeholder="Quantité" class="form-control" size="5" asp-for="FormUnitSold.QUANTITY">
+                        <button asp-page-handler="UnitSold" type="submit" class="btn btn-success">Vendu</button>
+                    </div>
+                </form>
+                <div>
+                    @if (TempData["error"] != null)
+                    {
+                        <p>@TempData["error"]</p>
+                    }
+                </div>
+            }
         </li>
     </ul>
     
