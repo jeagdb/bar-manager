@@ -92,8 +92,11 @@ namespace BarManagement.Pages
             {
                 var drinkId = Int32.Parse(Request.Form["drinkSelected_" + index ]);
                 Models.Drinks drink = Drinks.First(drink => drink.Id == drinkId);
-                Models.Stocks stocks = Stocks.First(stock => stock.DrinkId == drinkId);
-                cost += (Double) stocks.Price * composition.Quantity;
+                Models.Stocks stocks = Stocks.FirstOrDefault(stock => stock.DrinkId == drinkId);
+                if (stocks != null)
+                {
+                    cost += (Double)stocks.Price * composition.Quantity;
+                }
                 if (drink.Category == "Alcool") { containAlcool = true;  }
                 await _cocktailsCompositionRepository.Insert(new Models.CocktailsComposition() { DrinkId = drink.Id, CocktailId = newCocktail.Id, Quantity = composition.Quantity });
                 index++;

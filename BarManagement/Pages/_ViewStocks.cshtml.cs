@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BarManagement.DataAccess.EfModels;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -28,10 +29,14 @@ namespace BarManagement.Pages
         private readonly DataAccess.Interfaces.IStocksRepository _stocksRepository;
         private readonly DataAccess.Interfaces.ITransactionsRepository _transactionsRepository;
         private readonly DataAccess.Interfaces.IDrinksRepository _drinksRepository;
+        private readonly DataAccess.Interfaces.ICocktailsCompositionRepository _cocktailsCompositionRepository;
+        private readonly DataAccess.Interfaces.ICocktailsRepository _cocktailsRepository;
         private List<string> Categories = new List<string> { "Soft", "Alcool" };
 
         public List<Models.Stocks> Stocks { get; set; }
         public List<Models.Drinks> Drinks { get; set; }
+        public List<Models.Cocktails> Cocktails { get; set; }
+        public List<Models.CocktailsComposition> CocktailsCompositions { get; set; }
         public List<SelectListItem> DrinksOptions { get; set; }
         public List<SelectListItem> CategoryOptions { get; set; }
 
@@ -70,11 +75,15 @@ namespace BarManagement.Pages
 
         public StocksModel(DataAccess.Interfaces.IStocksRepository stocksRepository,
             DataAccess.Interfaces.IDrinksRepository drinksRepository,
-            DataAccess.Interfaces.ITransactionsRepository transactionsRepository)
+            DataAccess.Interfaces.ITransactionsRepository transactionsRepository,
+            DataAccess.Interfaces.ICocktailsCompositionRepository cocktailsCompositionRepository,
+            DataAccess.Interfaces.ICocktailsRepository cocktailsRepository)
         {
             _stocksRepository = stocksRepository;
             _drinksRepository = drinksRepository;
             _transactionsRepository = transactionsRepository;
+            _cocktailsCompositionRepository = cocktailsCompositionRepository;
+            _cocktailsRepository = cocktailsRepository;
         }
 
         public void OnGetAsync()
@@ -103,6 +112,7 @@ namespace BarManagement.Pages
         {
             ModelState.MarkAllFieldsAsSkipped();
             Drinks = _drinksRepository.GetDrinks();
+            Cocktails = _cocktailsRepository.GetCocktails();
             if (!TryValidateModel(FormStock, nameof(FormStock)) || Drinks == null)
             {
                 return Redirect("./_ViewStocks");
@@ -111,6 +121,20 @@ namespace BarManagement.Pages
             Models.Drinks drink = Drinks.First(drink => drink.Id == drinkId);
             long quantity = calculateTotalQuantity(Int32.Parse(FormStock.NUMBER), Int32.Parse(FormStock.CAPACITY));
             double pricePerCl = calculatePricePerCl(Double.Parse((FormStock.PRICE).Replace('.', ',')), Int32.Parse(FormStock.CAPACITY));
+
+            foreach (Models.Cocktails cocktail in Cocktails)
+            {
+                CocktailsCompositions = _cocktailsCompositionRepository.getCompositionByCocktailId(cocktail.Id);
+                foreach (Models.CocktailsComposition cocktailsComposition in CocktailsCompositions)
+                {
+                    if (cocktailsComposition.DrinkId == drinkId)
+                    {
+                        Double cost = cocktailsComposition.Quantity * pricePerCl;
+                        cocktail.Cost += cost;
+                        await _cocktailsRepository.Update(cocktail);
+                    }
+                }
+            }
 
             var stock = await _stocksRepository.Insert(new Models.Stocks() { DrinkId = drink.Id, Price = pricePerCl, Quantity = quantity });
             var transaction = await _transactionsRepository.Insert(new Models.Transactions() { SellDate = DateTime.Now, Value = -(Double.Parse((FormStock.PRICE).Replace('.', ',')) * Int32.Parse(FormStock.NUMBER)), CocktailId = null });
@@ -122,14 +146,29 @@ namespace BarManagement.Pages
         {
             ModelState.MarkAllFieldsAsSkipped();
             Stocks = _stocksRepository.GetStocks();
+            Cocktails = _cocktailsRepository.GetCocktails();
             if (!TryValidateModel(FormStock, nameof(FormStock)) || Stocks == null)
             {
                 return Redirect("./_ViewStocks");
             }
             Models.Stocks stock = Stocks.First(stock => stock.Id == id);
-
             long quantity = calculateTotalQuantity(Int32.Parse(FormStock.NUMBER), Int32.Parse(FormStock.CAPACITY));
             double pricePerCl = calculatePricePerCl(Double.Parse((FormStock.PRICE).Replace('.', ',')), Int32.Parse(FormStock.CAPACITY));
+
+            foreach (Models.Cocktails cocktail in Cocktails)
+            {
+                CocktailsCompositions = _cocktailsCompositionRepository.getCompositionByCocktailId(cocktail.Id);
+                foreach (Models.CocktailsComposition cocktailsComposition in CocktailsCompositions)
+                {
+                    if (cocktailsComposition.DrinkId == stock.DrinkId)
+                    {
+                        Double cost = cocktailsComposition.Quantity * pricePerCl;
+                        cocktail.Cost += cost;
+                        await _cocktailsRepository.Update(cocktail);
+                    }
+                }
+            }
+
             stock.Price = pricePerCl;
 
             double subQuantity = Math.Abs((Double) (quantity - stock.Quantity) / Double.Parse(FormStock.CAPACITY)); 
