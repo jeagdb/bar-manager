@@ -50,26 +50,29 @@
                 <tbody>
                     @foreach (var item in Model.Drinks)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Brand)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Category)
-                            </td>
-                            <td>
-                                <form method="post">
-                                    <button asp-page-handler="RemoveDrink" asp-route-id="@item.Id" type="submit" class="btn btn-danger">X</button>
-                                </form>
-                                @if (!Model.isDelete)
-                                {
-                                    <p>Attention, suppression impossible : il existe un stock de cette boisson.</p>
-                                }
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Brand)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category)
+                        </td>
+                        <td>
+                            <form method="post">
+                                <button asp-page-handler="RemoveDrink" asp-route-id="@item.Id" type="submit" class="btn btn-danger">X</button>
+                            </form>
+                        </td>
+                        <br />
+                        <div>
+                            @if (TempData["error"] != null)
+                            {
+                                <p style="color: maroon; font-style: italic; margin-left: 30px; font-size: 20px">@TempData["error"]</p>
+                            }
+                        </div>
+                    </tr>
                     }
                 </tbody>
             </table>

@@ -187,7 +187,13 @@ namespace BarManagement.Pages
         }
         public async Task<IActionResult> OnPostRemoveDrink(long id)
         {
+            Drinks = _drinksRepository.GetDrinks();
+            var drinkUtil = Drinks.First(drink => drink.Id == id);
             isDelete = await _drinksRepository.Delete(id);
+            if (isDelete == false)
+            {
+                TempData["error"] = "Attention, suppression impossible : il existe un stock de cette boisson : " + drinkUtil.Name;
+            }
             return Redirect("./_ViewStocks");
         }
         
