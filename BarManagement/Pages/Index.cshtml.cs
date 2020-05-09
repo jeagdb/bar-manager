@@ -112,11 +112,15 @@ namespace BarManagement.Pages
                 Models.Drinks drinkUnit = Drinks.FirstOrDefault(drink => drink.Id == drinkId);
                 Models.Stocks drinkUnitStock = Stocks.FirstOrDefault(stock => stock.DrinkId == drinkUnit.Id);
 
-                if (cocktailSoldQuantity * drinkQuantity > drinkUnitStock.Quantity)
+                if ((drinkUnitStock != null) && cocktailSoldQuantity * drinkQuantity > drinkUnitStock.Quantity)
                 {
                     TempData["error"] = "No More Available";
                     ModelState.AddModelError("Quantity error", "No more available");
-                    Redirect("./Index");
+                    continue;
+                }
+                if (drinkUnitStock is null) 
+                {
+                    continue;
                 }
                 drinkUnitStock.Quantity -= cocktailSoldQuantity * drinkQuantity;
                 await _stocksRepository.Update(drinkUnitStock);

@@ -108,7 +108,6 @@ namespace BarManagement.DataAccess.EfModels
                 entity.HasOne(d => d.Drink)
                     .WithMany(p => p.Stocks)
                     .HasForeignKey(d => d.DrinkId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Stocks_Drinks");
             });
 

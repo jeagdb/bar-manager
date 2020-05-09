@@ -1,4 +1,4 @@
-Projet réalisé par Feng Chung, Jeanne Gardebois, Axel Baroux, Thomas Franel
+﻿Projet réalisé par Feng Chung, Jeanne Gardebois, Axel Baroux, Thomas Franel
 MTI 2021
 
 # Tuto Déploiement
@@ -73,17 +73,17 @@ Enregistrez -> Creéz un profil
 ## IIS
 * Créez ensuite un nouveau site web (clique droit sur "Sites").
 nom du site : bar.management
-chemin d'accès: chemin menant vers %SystemDrive%\inetpub\wwwroot
+chemin d'accès: chemin menant vers %SystemDrive%\inetpub\wwwroot\dossierPublié
 nom de l'hôte: bar.management
 * Déroulez le nouveau bar.management : vous devez voir votre dossier. clic droit -> convertir en application...
 * Une fois votre application créée, vous pouvez la lancer : le site est maintenant déployé.
 
 ## Besoin d'aide ?
 ### Si le déploiement ne s'est pas passé comme prévu
-- Reprend chaque étape une à une et vérifie que tu n'as rien oublié.
-- Utilise l'outils: Observateurs d'événements disponible sur windows. Journaux Windows -> Application => séries de logs qui t'aideront à mieux comprendre les erreurs.
-### Vérifie
+- Reprendre chaque étape une à une.
+- Utiliser l'outils: Observateurs d'événements disponible sur windows. Journaux Windows -> Application => séries de logs qui aideront à mieux comprendre les erreurs.
+### Vérifier
 - panneau de configuration -> Programmes -> Activer/Désactiver des fonctionnalités windows
-Coche : 
+Cocher: 
 	 - Internet Informations Services -> Services World Wild Web -> ASPNET 4.7 
 	 - Internet Informations Services -> Services World Wild Web -> CGI
