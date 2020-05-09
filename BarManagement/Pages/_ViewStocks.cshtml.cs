@@ -190,12 +190,14 @@ namespace BarManagement.Pages
             isDelete = await _drinksRepository.Delete(id);
             return Redirect("./_ViewStocks");
         }
-
+        
+        // Retourne le prix au cl
         public double calculatePricePerCl(double priceQuantity, long quantity)
         {
             return Math.Round(priceQuantity / quantity, 2);
         }
 
+        // Retourne la quantité totale de cl du stock ajouté
        public long calculateTotalQuantity(long capacity, long number)
         {
             return capacity * number;
