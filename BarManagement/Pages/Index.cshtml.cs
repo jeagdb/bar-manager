@@ -97,7 +97,7 @@ namespace BarManagement.Pages
             if (!TryValidateModel(FormUnitSold, nameof(FormUnitSold)))
             {
                 ModelState.AddModelError("Form", "Invalid Form");
-                return Redirect("./");
+                return Redirect("./Index");
             }
             string cocktailSoldName = FormUnitSold.NAME;
             int cocktailSoldQuantity = FormUnitSold.QUANTITY;
@@ -115,7 +115,7 @@ namespace BarManagement.Pages
                 if (cocktailSoldQuantity * drinkQuantity > drinkUnitStock.Quantity)
                 {
                     ModelState.AddModelError("Quantity error", "No more available");
-                    Redirect("./");
+                    Redirect("./Index");
                 }
                 drinkUnitStock.Quantity -= cocktailSoldQuantity * drinkQuantity;
                 await _stocksRepository.Update(drinkUnitStock);
@@ -126,7 +126,7 @@ namespace BarManagement.Pages
                 Value = cocktailSold.PriceToSell * FormUnitSold.QUANTITY,
                 CocktailId = cocktailSold.Id
             });
-            return Redirect("./");
+            return Redirect("./Index");
         }
     }
 }

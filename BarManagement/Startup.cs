@@ -1,19 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using BarManagement.DataAccess;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-
 namespace BarManagement
 {
     public class Startup
@@ -36,7 +29,6 @@ namespace BarManagement
 
             services.AddAutoMapper(typeof(DataAccess.AutomapperProfiles));
             services.AddRazorPages();
-            services.AddControllers();
             services.AddSession(options =>
             {
                 options.Cookie.HttpOnly = true;
@@ -67,7 +59,7 @@ namespace BarManagement
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 

@@ -118,7 +118,7 @@ namespace BarManagement.Pages
             }
             newCocktail.Cost = cost;
             await _cocktailsRepository.Update(newCocktail);
-            return Redirect("./Cocktails");
+            return Redirect("./_ViewCocktails");
         }
         public void OnPostAdd()
         {
@@ -149,7 +149,7 @@ namespace BarManagement.Pages
             cocktail.Name = FormCocktail.NAME;
             cocktail.PriceToSell = Double.Parse(FormCocktail.PRICE);
             var updatedCocktail = await _cocktailsRepository.Update(cocktail);
-            return Redirect("./Cocktails");
+            return Redirect("./_ViewCocktails");
         }
 
         public async Task<IActionResult> OnPostRemoveCocktail(long id)
@@ -159,7 +159,7 @@ namespace BarManagement.Pages
                 removeComposition(composition.Id);
             });
             await _cocktailsRepository.Delete(id);
-            return Redirect("./Cocktails");
+            return Redirect("./_ViewCocktails");
         }
 
         public async void removeComposition(long id)
