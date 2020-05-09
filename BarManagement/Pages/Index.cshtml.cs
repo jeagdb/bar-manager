@@ -96,7 +96,7 @@ namespace BarManagement.Pages
             Drinks = _drinksRepository.GetDrinks();
             if (!TryValidateModel(FormUnitSold, nameof(FormUnitSold)))
             {
-                ModelState.AddModelError("Form", "Invalid Form");
+                TempData["error"] = "Invalid Form";
                 return Redirect("./Index");
             }
             string cocktailSoldName = FormUnitSold.NAME;
@@ -104,6 +104,7 @@ namespace BarManagement.Pages
             Models.Cocktails cocktailSold = Cocktails.FirstOrDefault(cocktail => cocktail.Name == cocktailSoldName);
 
             List<Models.CocktailsComposition> cocktailSoldCompo = _cocktailsCompositionRepository.getCompositionByCocktailId(cocktailSold.Id);
+            List<Models.Stocks> drinkUnitStockList = new List<Models.Stocks>();
 
             foreach (var compoUnit in cocktailSoldCompo)
             {
@@ -115,14 +116,18 @@ namespace BarManagement.Pages
                 if ((drinkUnitStock != null) && cocktailSoldQuantity * drinkQuantity > drinkUnitStock.Quantity)
                 {
                     TempData["error"] = "No More Available";
-                    ModelState.AddModelError("Quantity error", "No more available");
-                    continue;
+                    return Redirect("./Index");
                 }
                 if (drinkUnitStock is null) 
                 {
                     continue;
                 }
                 drinkUnitStock.Quantity -= cocktailSoldQuantity * drinkQuantity;
+                drinkUnitStockList.Add(drinkUnitStock);
+            }
+
+            foreach(var drinkUnitStock in drinkUnitStockList)
+            {
                 await _stocksRepository.Update(drinkUnitStock);
             }
 
