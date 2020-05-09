@@ -65,9 +65,9 @@ namespace BarManagement.Pages
             double cost = currentCocktails.Cost;
 
             double nbSoldGlasses = NbSoldGlassesSortedByCategory[indexI][indexJ];
-            double earning = priceToSell - cost;
+            double earning = Math.Round(priceToSell - cost, 2);
             double totalEarnings = Math.Round(earning * nbSoldGlasses, 2);
-            double profitability = Math.Round(priceToSell / cost, 2);
+            double profitability = Math.Round(earning / priceToSell, 2) * 100;
 
             bigTotalEarnings += totalEarnings;
             return new double[]{ nbSoldGlasses, earning, totalEarnings, profitability };
