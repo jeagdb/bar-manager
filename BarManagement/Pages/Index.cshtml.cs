@@ -53,9 +53,9 @@ namespace BarManagement.Pages
             _transactionsRepository = transactionsRepository;
             _drinksRepository = drinksRepository;
 
-            Cocktails = _coktailsRepository.GetCocktails();
-            Stocks = _stocksRepository.GetStocks();
-            Drinks = _drinksRepository.GetDrinks();
+            Cocktails = new List<Models.Cocktails>();
+            Stocks = new List<Models.Stocks>();
+            Drinks = new List<Models.Drinks>();
 
             alcoolList = new List<Models.Cocktails>();
             cocktailList = new List<Models.Cocktails>();
@@ -65,7 +65,11 @@ namespace BarManagement.Pages
 
         public void OnGetAsync()
         {
-            foreach(Models.Cocktails cocktail in Cocktails)
+            Cocktails = _coktailsRepository.GetCocktails();
+            Stocks = _stocksRepository.GetStocks();
+            Drinks = _drinksRepository.GetDrinks();
+
+            foreach (Models.Cocktails cocktail in Cocktails)
             {
                 switch (cocktail.CocktailCategory)
                 {
