@@ -15,7 +15,7 @@ namespace barManagementTests.Pages
         {
             BM.Pages.StocksModel stocks = new BM.Pages.StocksModel(null, null, null);
             var res = stocks.calculatePricePerCl(2, 30);
-            Assert.Equal(0.067, res);
+            Assert.Equal(0.07, res);
         }
 
         [Fact]

@@ -56,7 +56,7 @@ namespace BarManagement.Pages
                 return Page();
             }
             await _transactionsRepository.Insert(new Models.Transactions() { SellDate = DateTime.Now, Value = Double.Parse((FormBalance.BALANCE).Replace('.', ',')) });
-            return Redirect("./Transactions");
+            return Redirect("./_ViewTransactions");
         }
     }
 }

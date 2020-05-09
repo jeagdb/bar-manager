@@ -93,10 +93,10 @@ namespace BarManagement.Pages
             ModelState.MarkAllFieldsAsSkipped();
             if (!TryValidateModel(FormDrink, nameof(FormDrink)))
             {
-                return Redirect("./Stocks");
+                return Redirect("./_ViewStocks");
             }
             await _drinksRepository.Insert(new Models.Drinks() { Name = FormDrink.NAME, Brand = FormDrink.BRAND, Category = Request.Form["categorySelected"] });
-            return Redirect("./Stocks");
+            return Redirect("./_ViewStocks");
         }
 
         public async Task<IActionResult> OnPostStocks()
@@ -105,7 +105,7 @@ namespace BarManagement.Pages
             Drinks = _drinksRepository.GetDrinks();
             if (!TryValidateModel(FormStock, nameof(FormStock)) || Drinks == null)
             {
-                return Redirect("./Stocks");
+                return Redirect("./_ViewStocks");
             }
             var drinkId = Int32.Parse(Request.Form["drinkSelected"]);
             Models.Drinks drink = Drinks.First(drink => drink.Id == drinkId);
@@ -115,7 +115,7 @@ namespace BarManagement.Pages
             var stock = await _stocksRepository.Insert(new Models.Stocks() { DrinkId = drink.Id, Price = pricePerCl, Quantity = quantity });
             var transaction = await _transactionsRepository.Insert(new Models.Transactions() { SellDate = DateTime.Now, Value = -(Double.Parse((FormStock.PRICE).Replace('.', ',')) * Int32.Parse(FormStock.NUMBER)), CocktailId = null });
             stock.Drink = drink;
-            return Redirect("./Stocks");
+            return Redirect("./_ViewStocks");
         }
 
         public async Task<IActionResult> OnPostUpdateStock(long id)
@@ -124,7 +124,7 @@ namespace BarManagement.Pages
             Stocks = _stocksRepository.GetStocks();
             if (!TryValidateModel(FormStock, nameof(FormStock)) || Stocks == null)
             {
-                return Redirect("./Stocks");
+                return Redirect("./_ViewStocks");
             }
             Models.Stocks stock = Stocks.First(stock => stock.Id == id);
 
@@ -138,23 +138,23 @@ namespace BarManagement.Pages
             var updatedTransactions = await _transactionsRepository.Insert(new Models.Transactions()
             { SellDate = DateTime.Now, Value = - subQuantity * Double.Parse((FormStock.PRICE)), CocktailId = null });
 
-            return Redirect("./Stocks");
+            return Redirect("./_ViewStocks");
         }
 
         public async Task<IActionResult> OnPostRemoveStock(long id)
         {
             await _stocksRepository.Delete(id);
-            return Redirect("./Stocks");
+            return Redirect("./_ViewStocks");
         }
         public async Task<IActionResult> OnPostRemoveDrink(long id)
         {
             isDelete = await _drinksRepository.Delete(id);
-            return Redirect("./Stocks");
+            return Redirect("./_ViewStocks");
         }
 
         public double calculatePricePerCl(double priceQuantity, long quantity)
         {
-            return Math.Round(priceQuantity / quantity, 3);
+            return Math.Round(priceQuantity / quantity, 2);
         }
 
        public long calculateTotalQuantity(long capacity, long number)
