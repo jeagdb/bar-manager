@@ -14,14 +14,14 @@ namespace barManagementTests.Models
             Assert.NotNull(drinkResult);
         }
 
-        [Fact]
+        /*[Fact]
         public void InitializeWithStocks()
         {
             var drinkResult = new BarManagement.Models.Drinks();
             drinkResult.Stocks = new List<BarManagement.Models.Stocks>();
             Assert.NotNull(drinkResult);
             Assert.Equal(0, drinkResult.Stocks.Count);
-        }
+        }*/
 
     }
 }

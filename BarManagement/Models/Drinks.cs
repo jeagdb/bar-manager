@@ -12,6 +12,6 @@ namespace BarManagement.Models
         public string Brand { get; set; }
         public string Category { get; set; }
 
-        public virtual ICollection<Stocks> Stocks { get; set; }
+        //public virtual ICollection<Stocks> Stocks { get; set; }
     }
 }
