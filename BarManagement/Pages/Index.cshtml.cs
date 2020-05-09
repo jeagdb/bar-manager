@@ -113,7 +113,7 @@ namespace BarManagement.Pages
                 Models.Drinks drinkUnit = Drinks.FirstOrDefault(drink => drink.Id == drinkId);
                 Models.Stocks drinkUnitStock = Stocks.FirstOrDefault(stock => stock.DrinkId == drinkUnit.Id);
 
-                if ((drinkUnitStock != null) && cocktailSoldQuantity * drinkQuantity > drinkUnitStock.Quantity)
+                if (drinkUnitStock == null || cocktailSoldQuantity * drinkQuantity > drinkUnitStock.Quantity)
                 {
                     TempData["error"] = "Il n'y a plus assez de " + cocktailSold.Name + " :(";
                     return Redirect("./Index");
