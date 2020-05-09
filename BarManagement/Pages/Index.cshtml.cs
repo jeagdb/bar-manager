@@ -53,9 +53,9 @@ namespace BarManagement.Pages
             _transactionsRepository = transactionsRepository;
             _drinksRepository = drinksRepository;
 
-            Cocktails = new List<Models.Cocktails>();
-            Stocks = new List<Models.Stocks>();
-            Drinks = new List<Models.Drinks>();
+            Cocktails = _coktailsRepository.GetCocktails();
+            Stocks = _stocksRepository.GetStocks();
+            Drinks = _drinksRepository.GetDrinks();
 
             alcoolList = new List<Models.Cocktails>();
             cocktailList = new List<Models.Cocktails>();
